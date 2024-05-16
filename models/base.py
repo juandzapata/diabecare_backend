@@ -1,5 +1,5 @@
 from decimal import Decimal
-from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, String
+from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String
 from database.db import Base
 from sqlalchemy.orm import relationship
 class UsuarioRol(Base):
@@ -14,7 +14,6 @@ class Usuario(Base):
     apellidos = Column(String(100))
     correo = Column(String, unique=True)
     contraseña = Column(String(100))
-    edad = Column(Integer)
     sexo = Column(String(1))
     ciudad = Column(String(100))
     foto = Column(String(255), nullable=True)
@@ -79,8 +78,8 @@ class Recomendacion(Base):
 class HistorialDatos(Base):
     __tablename__ = 'HistorialDatos'
     historialDatosId = Column(Integer, primary_key=True, autoincrement=True)
-    nivelGlucosa = Column(Decimal(10, 2))
-    horasActividadFisica = Column(Decimal(10, 2))
+    nivelGlucosa = Column(DECIMAL(10,2))
+    horasActividadFisica = Column(DECIMAL(10, 2))
     medicamento = Column(String(100))
     comida = Column(String(255))
     fecha = Column(Date)
@@ -91,6 +90,7 @@ class Favorito(Base):
     __tablename__ = 'Favorito'
     favoritoId = Column(Integer, primary_key=True, autoincrement=True)
     pacienteId = Column(Integer, ForeignKey('Paciente.pacienteId'))
+    contenidoId = Column(Integer, ForeignKey('ContenidoEducativo.contenidoId'))
     fecha = Column(Date)
     paciente = relationship("Paciente") 
     contenido = relationship("ContenidoEducativo")
