@@ -14,7 +14,7 @@ class GetUser(BaseModel):
     fecha_nacimiento: date
     
 class UserGetLogin(BaseModel):
-    usuarioid: int
+    usuarioId: int
     nombre: str
     apellidos: str
     correo: str
@@ -22,12 +22,18 @@ class UserGetLogin(BaseModel):
     sexo: str
     ciudad: str
     foto: str
-    fechaNacimiento: date
+    fechaNacimiento: str
+    roles: list
 
 def model_dump(self):
     return {
         "id": self.id,
         "nombre": self.nombre,
         "apellidos": self.apellidos,
-        "correo": self.correo
+        "correo": self.correo,
+        "contrasena": self.contrasena,
+        "sexo": self.sexo,
+        "ciudad": self.ciudad,
+        "foto": self.foto,
+        "fecha_nacimiento": self.fecha_nacimiento
     }

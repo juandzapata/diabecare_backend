@@ -10,8 +10,19 @@ def login(credentials: CredentialsLogin, db) -> str:
     if not exit_user(credentials.email, db):
         return None
     user = get_user_by_email(credentials.email, db)
-    if user and auth.check_password(credentials.password, user.password):
-        user_get = UserGetLogin(**user._dict_)
+    if user and auth.check_password(credentials.password, user.contraseña):
+        user_get = UserGetLogin(
+            usuarioId=user.usuarioId,
+            nombre=user.nombre,
+            apellidos=user.apellidos,
+            correo=user.correo,
+            contraseña=user.contraseña,
+            sexo=user.sexo,
+            ciudad=user.ciudad,
+            foto=user.foto,
+            fechaNacimiento=user.fechaNacimiento.__str__(),
+            roles=[{rol.rolId, rol.nombre} for rol in user.roles]
+        )
         token = jwt.create_token(user_get)
     return token
 
