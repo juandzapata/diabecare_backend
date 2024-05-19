@@ -1,13 +1,13 @@
 from models.base import Usuario
-from schemas.usuario import GetUsuario
+from schemas.user import GetUser
 
 
-def todos_los_usuarios(db) -> list[GetUsuario]:
+def todos_los_usuarios(db) -> list[GetUser]:
     result = []
     usuarios = db.query(Usuario).all()
     for usuario in usuarios:
         try:
-            result.append(GetUsuario(
+            result.append(GetUser(
             id=usuario.usuarioId,
             nombre=usuario.nombre,
             apellidos=usuario.apellidos,

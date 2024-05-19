@@ -4,6 +4,7 @@ certifi==2024.2.2
 click==8.1.7
 colorama==0.4.6
 dnspython==2.6.1
+python-jose==3.3.0
 email_validator==2.1.1
 exceptiongroup==1.2.1
 fastapi==0.111.0
