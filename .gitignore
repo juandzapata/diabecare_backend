@@ -1,3 +1,4 @@
 env/
 database/
 environments/
+__pycache__
