@@ -8,7 +8,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "DiabeCare API"
 CLIENT = os.getenv("CLIENT_URL")
-origins = ["*"]
+origins = ["https://localhost","http://localhost:8000"]
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 app.include_router(user.router, tags=["Usuarios"], prefix="/usuarios")
