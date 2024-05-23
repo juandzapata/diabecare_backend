@@ -1,4 +1,4 @@
-from schemas.recomendacion import RecomendacionCreate, RecomendacionOut, RecomendacionUpdate
+from schemas.recomendacion import RecomendacionCreate, RecomendacionOut
 from sqlalchemy.orm import Session
 from models.base import Recomendacion
 
