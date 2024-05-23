@@ -9,7 +9,7 @@ class RecomendacionSchema(BaseModel):
 
 class RecomendacionCreate(BaseModel):
     planId: int
-    estado: str
+    estado: str = 'Sin realizar'
     actividad: str
     titulo: str
     horaEjecucion: str
