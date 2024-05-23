@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
-from routers import user, account
+from routers import user, account, paciente
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -13,9 +13,11 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 
 app.include_router(user.router, tags=["Usuarios"], prefix="/usuarios")
 app.include_router(account.router, tags=["Account"], prefix="/account")
+app.include_router(paciente.router, tags=["Pacientes"], prefix="/pacientes")
 
 
 
 @app.get("/")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
+

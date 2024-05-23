@@ -1,4 +1,3 @@
-from decimal import Decimal
 from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String, Time
 from database.db import Base
 from sqlalchemy.orm import relationship
@@ -60,11 +59,9 @@ class Recurso(Base):
 class PlanesPersonalizados(Base):
     __tablename__ = 'PlanesPersonalizados'
     planId = Column(Integer, primary_key=True, autoincrement=True)
-    pacienteId = Column(Integer, ForeignKey('Paciente.pacienteId'))
-    profesionalSaludId = Column(Integer, ForeignKey('ProfesionalSalud.profesionalSaludId'))
+    profesionalPacienteId = Column(Integer, ForeignKey('ProfesionalPaciente.profesionalPacienteId'))
     fechaCreacion = Column(Date)
-    paciente = relationship("Paciente")
-    profesionalSalud = relationship("ProfesionalSalud")
+
     
 class Recomendacion(Base):
     __tablename__ = 'Recomendacion'
@@ -106,7 +103,7 @@ class Notificacion(Base):
 class ProfesionalPaciente(Base):
     __tablename__ = 'ProfesionalPaciente'
     profesionalPacienteId = Column(Integer, primary_key=True, autoincrement=True)
-    profesionalId = Column(Integer, ForeignKey('ProfesionalSalud.profesionalSaludId'))
+    profesionalId = Column(Integer, ForeignKey('ProfesionalSalud.profesionalSaludId')) 
     pacienteId = Column(Integer, ForeignKey('Paciente.pacienteId'))
     
 class TokenUsuario(Base):
