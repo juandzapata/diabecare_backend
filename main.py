@@ -20,3 +20,4 @@ app.include_router(planes_personalizados.router, tags=["Planes Personalizados"],
 @app.get("/")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
+
