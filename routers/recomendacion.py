@@ -13,8 +13,8 @@ async def create_recomendacion(recomendacion: RecomendacionCreate, db: Session =
     recomendacion_creada: RecomendacionOut = post_recomendacion(recomendacion, db)
     if recomendacion_creada is None:
         raise HTTPException(
-            status_code = status.HTTP_409_CONFLICT,
-            detail = f'Recomendacion {recomendacion.titulo} already exists'
+            status_code = status.HTTP_400_BAD_REQUEST,
+            detail = f'Recomendacion {recomendacion.titulo} is not added to the database'
         )
     return JSONResponse(
         status_code = status.HTTP_201_CREATED,

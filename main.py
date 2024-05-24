@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
-from routers import user, account, recomendacion
+from routers import user, account, recomendacion, planes_personalizados
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -15,7 +15,7 @@ app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,a
 app.include_router(user.router, tags=["Usuarios"], prefix="/usuarios")
 app.include_router(account.router, tags=["Account"], prefix="/account")
 app.include_router(recomendacion.router, tags=["Recomendaciones"], prefix="/recomendaciones")
-
+app.include_router(planes_personalizados.router, tags=["Planes Personalizados"], prefix="/planes_personalizados")
 
 @app.get("/")
 async def root():

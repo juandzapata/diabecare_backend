@@ -1,21 +1,13 @@
-"""
-class PlanesPersonalizados(Base):
-    __tablename__ = 'PlanesPersonalizados'
-    planId = Column(Integer, primary_key=True, autoincrement=True)
-    pacienteId = Column(Integer, ForeignKey('Paciente.pacienteId'))
-    profesionalSaludId = Column(Integer, ForeignKey('ProfesionalSalud.profesionalSaludId'))
-    fechaCreacion = Column(Date)
-    paciente = relationship("Paciente")
-    profesionalSalud = relationship("ProfesionalSalud")
-"""
+from typing import List
 from pydantic import BaseModel
-from sqlalchemy import Date
+from datetime import date
+from schemas.recomendacion import RecomendacionCreate
 
 class PlanPersonalizadoCreate (BaseModel):
-    pacienteId = int
-    profesionalSaludId = int
-    fechaCreacion = Date
-    recomendaciones = list
+    pacienteId: int
+    profesionalSaludId: int
+    fechaCreacion: date = date.today()
+    recomendaciones: List[RecomendacionCreate]
 
-class PlanesPersonalizadosOut (BaseModel):
+class PlanPersonalizadoOut (BaseModel):
     planId: int
