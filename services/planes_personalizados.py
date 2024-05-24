@@ -1,26 +1,33 @@
+from datetime import date
 from fastapi import HTTPException
 import httpx
 from schemas.planes_personalizados import PlanPersonalizadoCreate, PlanPersonalizadoOut
 from sqlalchemy.orm import Session
-from models.base import PlanesPersonalizados, Recomendacion
+from models.base import PlanesPersonalizados, ProfesionalPaciente
 from services.recomendacion import post_recomendacion
 
 def post_plan_personalizado (plan: PlanPersonalizadoCreate, database) -> PlanPersonalizadoOut:
+    profesionalPacienteId = buscar_ProfecionalPaciente(plan.pacienteId, plan.profesionalSaludId, database)
     db_plan: PlanesPersonalizados = PlanesPersonalizados(
-        pacienteId = plan.pacienteId,
-        profesionalSaludId = plan.profesionalSaludId,
-        fechaCreacion = plan.fechaCreacion
+        profesionalPacienteId = profesionalPacienteId,
+        fechaCreacion = date.today()
     )
     database.add(db_plan)
     database.commit()
     database.refresh(db_plan)
     
-    for i in range(len(plan.recomendaciones)):
-        plan.recomendaciones[i].planId = db_plan.planId
-        post_recomendacion(plan.recomendaciones[i], database)
-    
+    crear_recomendaciones_plan(plan, db_plan.planId, database)
+
     # Send notification to the created plan
-    return PlanPersonalizadoOut(**db_plan.__dict__)
+    return db_plan.planId
+
+def crear_recomendaciones_plan (plan: PlanPersonalizadoCreate, planId: int , database) -> None:
+    for i in range(len(plan.recomendaciones)):
+        plan.recomendaciones[i].planId = planId
+        post_recomendacion(plan.recomendaciones[i], database)
+
+def buscar_ProfecionalPaciente (pacienteId: int, profesionalSaludId: int, database) -> int:
+    return database.query(ProfesionalPaciente).filter(ProfesionalPaciente.pacienteId == pacienteId, ProfesionalPaciente.profesionalId == profesionalSaludId).first().profesionalPacienteId
 
 #Crea un método para enviar una notificación haciendo solicitud al microservicio de notificaciones
 async def send_notification (plan: PlanPersonalizadoCreate) -> None:

@@ -7,4 +7,4 @@ def post_recomendacion (recomendacion: RecomendacionCreate, database: Session) -
     database.add(db_recomendacion)
     database.commit()
     database.refresh(db_recomendacion)
-    return RecomendacionOut(**db_recomendacion.__dict__)
+    return db_recomendacion.recomendacionId

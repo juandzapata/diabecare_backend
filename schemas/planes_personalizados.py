@@ -6,7 +6,6 @@ from schemas.recomendacion import RecomendacionCreate
 class PlanPersonalizadoCreate (BaseModel):
     pacienteId: int
     profesionalSaludId: int
-    fechaCreacion: date = date.today()
     recomendaciones: List[RecomendacionCreate]
 
 class PlanPersonalizadoOut (BaseModel):
