@@ -3,6 +3,7 @@ from pydantic.types import Decimal
 from pydantic import BaseModel
 
 class PacienteLista(BaseModel):
+    patient_id: int
     name: str
     last_name: str
     date: date

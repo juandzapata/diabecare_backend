@@ -14,6 +14,7 @@ def get_info_patients_by_professional_id(db, profesional_id: int) -> list[Pacien
         ano_actual = date.today().year
         edad = ano_actual - row.fechaNacimiento.year
         paciente = PacienteLista(
+            patient_id=row.pacienteId,
             name=row.nombre,
             last_name=row.apellidos,
             age = edad,
