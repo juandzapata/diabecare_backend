@@ -5,7 +5,7 @@ from schemas.token import tokenCreate, tokenDeviceOut
 def post_token (token: tokenCreate, database) -> tokenDeviceOut:
     db_token : TokenUsuario = TokenUsuario(
         tokenDispositivo = token.token,
-        usuarioId = token.usuarioId
+        usuarioId = token.userId
     )
     database.add(db_token)
     database.commit()

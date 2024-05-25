@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 class tokenCreate(BaseModel):
     token: str
-    usuarioId: int
+    userId: int
 
 class tokenDeviceOut(BaseModel):
     tokenUsuarioId: int
