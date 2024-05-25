@@ -1,13 +1,13 @@
 from datetime import date
 from fastapi import HTTPException
 import httpx
-from schemas.planes_personalizados import PlanPersonalizadoCreate, PlanPersonalizadoOut
+from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
 from sqlalchemy.orm import Session
 from models.base import PlanesPersonalizados, ProfesionalPaciente
-from services.recomendacion import post_recomendacion
+from services.recomendation import post_recomendation
 
-def post_plan_personalizado (plan: PlanPersonalizadoCreate, database) -> PlanPersonalizadoOut:
-    profesionalPacienteId = buscar_ProfecionalPaciente(plan.pacienteId, plan.profesionalSaludId, database)
+def post_personalized_plan (plan: PersonalizedPlanCreate, database) -> PersonalizedPlanOut:
+    profesionalPacienteId = get_professional_patient(plan.pacienteId, plan.profesionalSaludId, database)
     db_plan: PlanesPersonalizados = PlanesPersonalizados(
         profesionalPacienteId = profesionalPacienteId,
         fechaCreacion = date.today()
@@ -16,21 +16,21 @@ def post_plan_personalizado (plan: PlanPersonalizadoCreate, database) -> PlanPer
     database.commit()
     database.refresh(db_plan)
     
-    crear_recomendaciones_plan(plan, db_plan.planId, database)
+    create_recommendations_for_plan(plan, db_plan.planId, database)
 
     # Send notification to the created plan
     return db_plan.planId
 
-def crear_recomendaciones_plan (plan: PlanPersonalizadoCreate, planId: int , database) -> None:
+def create_recommendations_for_plan (plan: PersonalizedPlanCreate, planId: int , database) -> None:
     for i in range(len(plan.recomendaciones)):
         plan.recomendaciones[i].planId = planId
-        post_recomendacion(plan.recomendaciones[i], database)
+        post_recomendation(plan.recomendaciones[i], database)
 
-def buscar_ProfecionalPaciente (pacienteId: int, profesionalSaludId: int, database) -> int:
+def get_professional_patient (pacienteId: int, profesionalSaludId: int, database) -> int:
     return database.query(ProfesionalPaciente).filter(ProfesionalPaciente.pacienteId == pacienteId, ProfesionalPaciente.profesionalId == profesionalSaludId).first().profesionalPacienteId
 
 #Crea un método para enviar una notificación haciendo solicitud al microservicio de notificaciones
-async def send_notification (plan: PlanPersonalizadoCreate) -> None:
+async def send_notification (plan: PersonalizedPlanCreate) -> None:
     # Datos de la notificación que quieres enviar
     notification_data = {
         "planId": plan.planId,

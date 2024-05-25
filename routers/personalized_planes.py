@@ -2,14 +2,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from database.db import get_db
-from schemas.planes_personalizados import PlanPersonalizadoCreate, PlanPersonalizadoOut
+from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
 from sqlalchemy.orm import Session
-from services.planes_personalizados import post_plan_personalizado
+from services.personalized_planes import post_personalized_plan
 
 router = APIRouter()
-@router.post("/planes_personalizados", summary="Crear un plan personalizado")
-async def create_plan_personalizado(plan: PlanPersonalizadoCreate, db: Session = Depends(get_db)):
-    plan_creado = post_plan_personalizado(plan, db)
+@router.post("/planes_personalizados", summary="Create a personalized plan")
+async def create_plan_personalizado(plan: PersonalizedPlanCreate, db: Session = Depends(get_db)):
+    plan_creado = post_personalized_plan(plan, db)
     if plan_creado is None:
         raise HTTPException(
             status_code = status.HTTP_409_CONFLICT,
