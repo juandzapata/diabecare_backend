@@ -1,4 +1,5 @@
 from constants  import messages
+from constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, tokenDeviceOut
@@ -9,16 +10,20 @@ from schemas.personalized_planes import PersonalizedPlanCreate
 
 
 def send_notification (plan: PersonalizedPlanCreate, db):
-    userPatient = patient.get_user_patient_by_id(plan.pacienteId, db)
-    deviceId = db.query(TokenUsuario).filter(TokenUsuario.usuarioId == userPatient[0]).first().tokenDispositivo
-    message = create_message(userPatient, plan.recomendaciones[0].planId, deviceId, db)
-    return send_notification_user(message, db)
+    user_patient = patient.get_user_patient_by_id(plan.pacienteId, db)
+    user_patient_id = user_patient[FIRST_ELEMENT_INDEX]
+    plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
+    device_id = db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
+    user_professional = patient.get_professional_by_patient_id(plan.pacienteId, db)
+    message = create_message(user_patient, user_professional, plan_id , device_id, db)
+    return send_notification_user(message)
 
-def create_message(patient: Usuario, planId: int, deviceId: str, db) -> NotificationMessage:
+def create_message(patient: Usuario, professioanl: Usuario, planId: int, deviceId: str, db) -> NotificationMessage:
+    INCREMENT = 1
     recomendations = recomendationService.get_recomendarions_by_plan_id(planId, db)
-    message = f"Hola {patient.nombre}!. se te creo un nuevo plan las recomendaciones del plan son: "
-    for recomendation in recomendations:
-        message += f"{recomendation.titulo}. "
+    message = f"Hola {patient.nombre}!. El Dr. {professioanl.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
+    for recomendation_index in range(len(recomendations)):
+        message += f" {recomendation_index + INCREMENT}.  {recomendations[recomendation_index].titulo}. \n"
     message = NotificationMessage(
         title = messages.CREATE_PLAN,
         body = message,
@@ -26,7 +31,7 @@ def create_message(patient: Usuario, planId: int, deviceId: str, db) -> Notifica
     )
     return message
 
-def send_notification_user(message:NotificationMessage, db):
+def send_notification_user(message:NotificationMessage):
     try:
         notification = messaging.Notification(
             title=message.title,
