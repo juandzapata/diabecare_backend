@@ -21,7 +21,7 @@ def login(credentials: CredentialsLogin, db) -> str:
             ciudad=user.ciudad,
             foto=user.foto,
             fechaNacimiento=user.fechaNacimiento.__str__(),
-            roles=[{rol.rolId, rol.nombre} for rol in user.roles]
+            rolId=user.rolId
         )
         token = jwt.create_token(user_get)
     return token

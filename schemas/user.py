@@ -22,7 +22,7 @@ class UserGetLogin(BaseModel):
     ciudad: str
     foto: str
     fechaNacimiento: str
-    roles: list
+    rolId: int
 
     def model_dump(self):
         return {
@@ -35,5 +35,5 @@ class UserGetLogin(BaseModel):
             "ciudad": self.ciudad,
             "foto": self.foto,
             "fecha_nacimiento": self.fechaNacimiento,
-            "roles": []
+            "rol": self.rolId
         }
