@@ -8,7 +8,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.title = "DiabeCare API"
 CLIENT = os.getenv("CLIENT_URL")
-origins = ["https://localhost","http://localhost:8100"]
+ORIGINS = os.getenv("ORIGIN_PATHS")
+origins = ORIGINS.split(" ")
+print("origins", origins)
+
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # Routers
@@ -21,4 +24,3 @@ app.include_router(paciente.router, tags=["Pacientes"], prefix="/pacientes")
 @app.get("/")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
-
