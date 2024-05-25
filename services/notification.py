@@ -2,7 +2,7 @@ from constants  import messages
 from constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage
 from firebase_admin import messaging
-from schemas.notification import tokenCreate, tokenDeviceOut
+from schemas.notification import tokenCreate, TokenDeviceOut
 from services import recomendation as recomendationService
 from services import patient
 from models.base import TokenUsuario, Usuario
@@ -18,10 +18,10 @@ def send_notification (plan: PersonalizedPlanCreate, db):
     message = create_message(user_patient, user_professional, plan_id , device_id, db)
     return send_notification_user(message)
 
-def create_message(patient: Usuario, professioanl: Usuario, planId: int, deviceId: str, db) -> NotificationMessage:
+def create_message(patient: Usuario, professional: Usuario, plan_id: int, deviceId: str, db) -> NotificationMessage:
     INCREMENT = 1
-    recomendations = recomendationService.get_recomendarions_by_plan_id(planId, db)
-    message = f"Hola {patient.nombre}!. El Dr. {professioanl.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
+    recomendations = recomendationService.get_recomendarions_by_plan_id(plan_id, db)
+    message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
     for recomendation_index in range(len(recomendations)):
         message += f" {recomendation_index + INCREMENT}.  {recomendations[recomendation_index].titulo}. \n"
     message = NotificationMessage(
@@ -47,19 +47,34 @@ def send_notification_user(message:NotificationMessage):
         return {"error": str(ex)}
 
 
-def post_token (token: tokenCreate, database) -> tokenDeviceOut:
+def post_token(token: tokenCreate, database) -> TokenDeviceOut:
+    # Verificar si ya existe un token para el usuario
+    existing_token = database.query(TokenUsuario).filter_by(usuarioId=token.userId).first()
 
-    db_token : TokenUsuario = TokenUsuario(
-        tokenDispositivo = token.token,
-        usuarioId = token.userId
-    )
-    if exists_user_token(token.userId, database):
-        database.update(db_token)
+    if existing_token:
+        # Actualizar el token existente
+        existing_token.tokenDispositivo = token.token
+        db_token = existing_token
     else:
+        # Crear un nuevo token
+        db_token = TokenUsuario(
+            tokenDispositivo=token.token,
+            usuarioId=token.userId
+        )
         database.add(db_token)
+    
+    # Guardar los cambios en la base de datos
     database.commit()
     database.refresh(db_token)
-    return db_token.tokenUsuarioId
+    
+    # Crear la respuesta
+    token_device_out = TokenDeviceOut(
+        usuarioId=db_token.usuarioId,
+        tokenDispositivo=db_token.tokenDispositivo,
+        tokenUsuarioId=db_token.tokenUsuarioId
+    )
+    
+    return token_device_out
 
-def exists_user_token (userId: int, db) -> bool:
-    return db.query(TokenUsuario).filter(TokenUsuario.usuarioId == userId).first() is not None
+def exists_user_token (user_id: int, db) -> bool:
+    return db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_id).first() is not None
