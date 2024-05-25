@@ -1,0 +1,1 @@
+DEFAULT_STATE_RECOMENDATION="Sin realizar"
