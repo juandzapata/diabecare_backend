@@ -2,14 +2,14 @@ from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from database.db import get_db
-from schemas.patient import PacienteLista
+from schemas.patient import PacientList
 from services.health_professional import get_patients
 from sqlalchemy.orm import Session
 
 
 router = APIRouter()
 
-@router.get("/patients_by_health_professional/{user_id}", response_model=list[PacienteLista], summary="Get patients by user id of a professional")
+@router.get("/patients_by_health_professional/{user_id}", response_model=list[PacientList], summary="Get patients by user id of a professional")
 async def get_patients_by_professional(user_id: int, db: Session = Depends(get_db)):
     print(user_id)
     pacientes = get_patients(user_id, db)

@@ -2,7 +2,8 @@ from datetime import date
 from pydantic.types import Decimal
 from pydantic import BaseModel
 
-class PacienteLista(BaseModel):
+class PacientList(BaseModel):
+    patient_id: int
     name: str
     last_name: str
     date: date

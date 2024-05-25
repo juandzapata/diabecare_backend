@@ -1,11 +1,11 @@
 from sqlalchemy import text
 from models.base import ProfesionalSalud
-from schemas.patient import PacienteLista
+from schemas.patient import PacientList
 from services.patient import get_info_patients_by_professional_id
 from sqlalchemy.orm import Session
 
 
-def get_patients(usuario_id: int, db) -> list[PacienteLista]:
+def get_patients(usuario_id: int, db) -> list[PacientList]:
     profesional_id = get_professional_id_by_user_id(db, usuario_id)
     if profesional_id != 0:
         lista_pacientes = get_info_patients_by_professional_id(db, profesional_id)
