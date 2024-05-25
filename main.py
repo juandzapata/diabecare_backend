@@ -1,7 +1,8 @@
+import token
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
-from routers import user, account, recomendacion, planes_personalizados, paciente
+from routers import token, user, account, recomendacion, planes_personalizados, paciente
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -17,6 +18,7 @@ app.include_router(account.router, tags=["Account"], prefix="/account")
 app.include_router(recomendacion.router, tags=["Recomendaciones"], prefix="/recomendaciones")
 app.include_router(planes_personalizados.router, tags=["Planes Personalizados"], prefix="/planes_personalizados")
 app.include_router(paciente.router, tags=["Pacientes"], prefix="/pacientes")
+app.include_router(token.router, tags=["Token"], prefix="/token")
 
 @app.get("/")
 async def root():
