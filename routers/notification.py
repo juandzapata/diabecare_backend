@@ -22,7 +22,7 @@ async def create_token(token: tokenCreate, db: Session = Depends(get_db)):
     if token_creado is None:
         raise HTTPException(
             status_code = status.HTTP_409_CONFLICT,
-            detail = f'Token is not added to the database'
+            detail = f'Token is not added to the database, retry'
         )
     return JSONResponse(
         status_code = status.HTTP_201_CREATED,
