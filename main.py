@@ -25,13 +25,12 @@ firebase_credentials = {
     "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL"),
     "universe_domain": os.getenv("FIREBASE_UNIVERSE_DOMAIN")
 }
-PORT = os.getenv("PORT")
+
 cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred)
 app.title = "DiabeCare API"
 origins = [os.getenv("ORIGIN_DEVICE"),os.getenv("ORIGIN_FRONTEND_DEFAULT"), os.getenv("ORIGIN_FRONTEND_SECOND")]
 print("ORIGINS",origins)
-print("PORT",PORT)
 
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
@@ -50,9 +49,7 @@ app.include_router(file.router, tags=["Files"], prefix="/files")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
 
-
+PORT = int(os.environ.get("PORT", 8000))
 
 if __name__ == "__main__":
-    kwargs = {"host": "localhost", "port": PORT}
-    kwargs.update({"debug": True, "reload": True})
-    uvicorn.run('main:app', reload=True)
+    uvicorn.run('main:app', reload=True, host="localhost", port=PORT)
