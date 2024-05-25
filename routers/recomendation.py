@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database.db import get_db
-from schemas.recomendacion import RecomendacionCreate, RecomendacionOut 
-from services.recomendacion import post_recomendacion
+from schemas.recomendation import RecomendationCreate, RecomendationOut 
+from services.recomendation import post_recomendation
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
 
-@router.post("/recomendacion", summary="Crear una recomendación")
-async def create_recomendacion(recomendacion: RecomendacionCreate, db: Session = Depends(get_db)):
-    recomendacion_creada = post_recomendacion(recomendacion, db)
+@router.post("/recomendation", summary="Create a recomendation")
+async def create_recomendation(recomendation: RecomendationCreate, db: Session = Depends(get_db)):
+    recomendacion_creada = post_recomendation(recomendation, db)
     if recomendacion_creada is None:
         raise HTTPException(
             status_code = status.HTTP_400_BAD_REQUEST,
