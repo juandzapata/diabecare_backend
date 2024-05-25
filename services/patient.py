@@ -1,6 +1,7 @@
 from datetime import date
-from constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID 
+from constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID, QUERY_GET_USER_PATIENT_BY_ID 
 
+from models.base import Usuario
 from sqlalchemy import text
 from schemas.patient import PacienteLista
 def get_info_patients_by_professional_id(db, professional_id: int) -> list[PacienteLista]:
@@ -27,3 +28,8 @@ def get_info_patients_by_professional_id(db, professional_id: int) -> list[Pacie
         result_list.append(paciente)
     
     return result_list
+
+def get_user_patient_by_id(id: int, db) -> Usuario:
+    query = text(QUERY_GET_USER_PATIENT_BY_ID)
+    user = db.execute(query, {"patientId": id}).first()
+    return user

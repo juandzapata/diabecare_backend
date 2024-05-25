@@ -8,3 +8,6 @@ def post_recomendation (recomendation: RecomendationCreate, database: Session) -
     database.commit()
     database.refresh(db_recomendation)
     return db_recomendation.recomendacionId
+
+def get_recomendarions_by_plan_id(plan_id: int, db) -> list[Recomendacion]:
+    return db.query(Recomendacion).filter(Recomendacion.planId == plan_id).all()

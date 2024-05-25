@@ -10,3 +10,15 @@ class NotificationSend(BaseModel):
     name: str
     notification: Notification
     fullName: str
+
+class tokenCreate(BaseModel):
+    token: str
+    userId: int
+
+class tokenDeviceOut(BaseModel):
+    tokenUsuarioId: int
+
+class NotificationMessage(BaseModel):
+    title: str
+    body: str
+    deviceToken: str
