@@ -9,7 +9,7 @@ from services.token import post_token
 
 router = APIRouter()
 
-@router.post("/token", response_model=dict, summary="guardar token de notificaciones")
+@router.post("/token", response_model=dict, summary="save token for notifications")
 async def create_token(token: tokenCreate, db: Session = Depends(get_db)):
     token_creado = post_token(token, db)
     if token_creado is None:
