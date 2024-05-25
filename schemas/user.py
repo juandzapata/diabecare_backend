@@ -1,7 +1,6 @@
 from datetime import date
 from pydantic import BaseModel
 
-
 class GetUser(BaseModel):
     id: int
     nombre: str
@@ -25,15 +24,16 @@ class UserGetLogin(BaseModel):
     fechaNacimiento: str
     roles: list
 
-def model_dump(self):
-    return {
-        "id": self.id,
-        "nombre": self.nombre,
-        "apellidos": self.apellidos,
-        "correo": self.correo,
-        "contrasena": self.contrasena,
-        "sexo": self.sexo,
-        "ciudad": self.ciudad,
-        "foto": self.foto,
-        "fecha_nacimiento": self.fecha_nacimiento
-    }
+    def model_dump(self):
+        return {
+            "usuarioId": self.usuarioId,
+            "nombre": self.nombre,
+            "apellidos": self.apellidos,
+            "correo": self.correo,
+            "contrasena": self.contraseña,
+            "sexo": self.sexo,
+            "ciudad": self.ciudad,
+            "foto": self.foto,
+            "fecha_nacimiento": self.fechaNacimiento,
+            "roles": []
+        }
