@@ -1,10 +1,6 @@
 from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String, Time
 from database.db import Base
 from sqlalchemy.orm import relationship
-class UsuarioRol(Base):
-    __tablename__ = 'UsuarioRol'
-    usuarioId = Column(Integer, ForeignKey('Usuario.usuarioId'), primary_key=True)
-    rolId = Column(Integer, ForeignKey('Rol.rolId'), primary_key=True)
     
 class Usuario(Base):
     __tablename__ = 'Usuario'
@@ -17,13 +13,13 @@ class Usuario(Base):
     ciudad = Column(String(100))
     foto = Column(String(255), nullable=True)
     fechaNacimiento = Column(Date)
-    roles = relationship("Rol", secondary="UsuarioRol")
+    rolId = Column(Integer, ForeignKey('Rol.rolId'))
+
     
 class Rol(Base):
     __tablename__ = 'Rol'
     rolId = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(100))
-    usuarios = relationship("Usuario", secondary="UsuarioRol")
     
 class Paciente(Base):
     __tablename__ = 'Paciente'
