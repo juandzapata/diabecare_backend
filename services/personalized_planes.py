@@ -8,6 +8,8 @@ from services import recomendation, notification
 
 def post_personalized_plan (plan: PersonalizedPlanCreate, database) -> PersonalizedPlanOut:
     profesionalPaciente = get_professional_patient(plan.pacienteId, plan.profesionalSaludId, database)
+    if profesionalPaciente is None:
+        return None
     db_plan: PlanesPersonalizados = PlanesPersonalizados(
         profesionalPacienteId = profesionalPaciente.profesionalPacienteId,
         fechaCreacion = date.today()
