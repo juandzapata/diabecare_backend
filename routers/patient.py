@@ -11,7 +11,7 @@ from services.patient import get_patient
 
 router = APIRouter()
 
-@router.get("/patients_by_health_professional/{user_id}", response_model=list[PacientList], summary="Get patients by user id of a professional")
+@router.get("/patients_by_health_professional/{user_id}", response_model=list[PacienteLista], summary="Get patients by user id of a professional")
 async def get_patients_by_professional(user_id: int, db: Session = Depends(get_db)):
     print(user_id)
     pacientes = get_patients(user_id, db)

@@ -2,7 +2,7 @@ import token
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
-from routers import patient, personalized_planes, recomendation, user, account, file, health_professional
+from routers import patient, personalized_planes, recomendation, user, account, file, health_professional, notification
 import os
 
 Base.metadata.create_all(bind=engine)
