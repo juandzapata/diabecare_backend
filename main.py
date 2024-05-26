@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from routers import user, account, recomendation, personalized_planes, patient, notification
 import firebase_admin
-import uvicorn
 from firebase_admin import credentials
 from routers import patient, personalized_planes, recomendation, user, file
 from routers import user, account
@@ -49,7 +48,3 @@ app.include_router(file.router, tags=["Files"], prefix="/files")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
 
-PORT = int(os.environ.get("PORT", 8000))
-
-if __name__ == "__main__":
-    uvicorn.run('main:app', reload=True, host="localhost", port=PORT)
