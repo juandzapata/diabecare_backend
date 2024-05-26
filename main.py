@@ -6,8 +6,7 @@ from routers import user, account, recomendation, personalized_planes, patient, 
 import firebase_admin
 from firebase_admin import credentials
 from routers import patient, personalized_planes, recomendation, user, file
-from routers import user, account
-from routers import patient, personalized_planes, recomendation, user, account, file, health_professional
+from routers import user, account, health_professional
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -16,7 +15,7 @@ firebase_credentials = {
     "type": os.getenv("FIREBASE_TYPE"),
     "project_id": os.getenv("FIREBASE_PROJECT_ID"),
     "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID"),
-    "private_key": os.getenv("FIREBASE_PRIVATE_KEY").replace('\\n', '\n'),
+    "private_key": os.getenv("FIREBASE_PRIVATE_KEY"),
     "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
     "client_id": os.getenv("FIREBASE_CLIENT_ID"),
     "auth_uri": os.getenv("FIREBASE_AUTH_URI"),
@@ -31,7 +30,7 @@ firebase_admin.initialize_app(cred)
 app.title = "DiabeCare API"
 origins = [os.getenv("ORIGIN_DEVICE"),os.getenv("ORIGIN_FRONTEND_DEFAULT"), os.getenv("ORIGIN_FRONTEND_SECOND")]
 print("ORIGINS",origins)
-
+origins = ["*"]
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # Routers
