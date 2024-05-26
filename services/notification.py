@@ -7,6 +7,7 @@ from services import recomendation as recomendationService
 from services import patient, health_professional
 from models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
+from services.utils import convert_time_to_12_hour_format
 
 
 def send_notification (plan: PersonalizedPlanCreate, db):
@@ -20,12 +21,14 @@ def send_notification (plan: PersonalizedPlanCreate, db):
 
 def create_message(patient: Usuario, professional: Usuario, plan_id: int, deviceId: str, db) -> NotificationMessage:
     INCREMENT = 1
-    print("PPPatient: ", patient)
-    print("PPProfesional: ", professional.__dict__)
     recomendations = recomendationService.get_recomendarions_by_plan_id(plan_id, db)
+    hora = convert_time_to_12_hour_format(recomendations[0].horaEjecucion)
+    print("Horaaaa", hora)
     message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
     for recomendation_index in range(len(recomendations)):
-        message += f" {recomendation_index + INCREMENT}. {recomendations[recomendation_index].titulo} - Hora: {recomendations[recomendation_index].horaEjecucion}. \n"
+        hora = convert_time_to_12_hour_format(recomendations[recomendation_index].horaEjecucion)
+        print("Horaaaa", hora)
+        message += f" {recomendation_index + INCREMENT}. {recomendations[recomendation_index].titulo} - Hora: {hora}. \n"
     message = NotificationMessage(
         title = messages.CREATE_PLAN,
         body = message,

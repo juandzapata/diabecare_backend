@@ -12,14 +12,13 @@ def post_personalized_plan (plan: PersonalizedPlanCreate, database) -> Personali
         profesionalPacienteId = profesionalPaciente.profesionalPacienteId,
         fechaCreacion = date.today()
     )
+
     database.add(db_plan)
     database.commit()
     database.refresh(db_plan)
     
     create_recommendations_for_plan(plan, db_plan.planId, database)
-    print("Plann: ", plan)
     #notification.send_notification(plan, database)
-    
     return db_plan.planId
 
 def create_recommendations_for_plan (plan: PersonalizedPlanCreate, planId: int , database) -> None:
