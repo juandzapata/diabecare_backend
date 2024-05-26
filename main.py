@@ -51,9 +51,7 @@ app.include_router(health_professional.router, tags=["Health Professional"], pre
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
 
-port = int(os.environ.get("PORT", 8000))
+port = int(os.environ.get("PORT", 8181))
 
 if __name__ == "__main__":
-    kwargs = {"host": "localhost", "port": port}
-    kwargs.update({"debug": True, "reload": True})
-    uvicorn.run('main:app', reload=True)
+    uvicorn.run('main:app', reload=True,host="127.0.0.1", port=port)
