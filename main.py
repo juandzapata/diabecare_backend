@@ -4,11 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
 from routers import user, account, recomendation, personalized_planes, patient, notification
 import firebase_admin
-import uvicorn
 from firebase_admin import credentials
 from routers import patient, personalized_planes, recomendation, user, file
-from routers import user, account
-from routers import patient, personalized_planes, recomendation, user, account, file, health_professional
+from routers import user, account, health_professional
+import uvicorn
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -26,13 +25,12 @@ firebase_credentials = {
     "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL"),
     "universe_domain": os.getenv("FIREBASE_UNIVERSE_DOMAIN")
 }
-PORT = os.getenv("PORT")
+
 cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred)
 app.title = "DiabeCare API"
 origins = [os.getenv("ORIGIN_DEVICE"),os.getenv("ORIGIN_FRONTEND_DEFAULT"), os.getenv("ORIGIN_FRONTEND_SECOND")]
 print("ORIGINS",origins)
-print("PORT",PORT)
 
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
@@ -52,9 +50,9 @@ app.include_router(health_professional.router, tags=["Health Professional"], pre
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
 
-
+port = int(os.environ.get("PORT", 8000))
 
 if __name__ == "__main__":
-    kwargs = {"host": "localhost", "port": PORT}
+    kwargs = {"host": "localhost", "port": port}
     kwargs.update({"debug": True, "reload": True})
     uvicorn.run('main:app', reload=True)
