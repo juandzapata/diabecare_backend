@@ -25,6 +25,7 @@ firebase_credentials = {
     "client_x509_cert_url": os.getenv("FIREBASE_CLIENT_X509_CERT_URL"),
     "universe_domain": os.getenv("FIREBASE_UNIVERSE_DOMAIN")
 }
+
 cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred)
 app.title = "DiabeCare API"
