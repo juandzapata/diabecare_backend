@@ -48,26 +48,21 @@ def send_notification_user(message:NotificationMessage):
 
 
 def post_token(token: tokenCreate, database) -> TokenDeviceOut:
-    # Verificar si ya existe un token para el usuario
     existing_token = database.query(TokenUsuario).filter_by(usuarioId=token.userId).first()
 
     if existing_token:
-        # Actualizar el token existente
         existing_token.tokenDispositivo = token.token
         db_token = existing_token
     else:
-        # Crear un nuevo token
         db_token = TokenUsuario(
             tokenDispositivo=token.token,
             usuarioId=token.userId
         )
         database.add(db_token)
     
-    # Guardar los cambios en la base de datos
     database.commit()
     database.refresh(db_token)
     
-    # Crear la respuesta
     token_device_out = TokenDeviceOut(
         usuarioId=db_token.usuarioId,
         tokenDispositivo=db_token.tokenDispositivo,
