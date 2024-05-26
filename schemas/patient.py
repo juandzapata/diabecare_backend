@@ -13,4 +13,7 @@ class PacientList(BaseModel):
     last_medication: str
     last_meal: str
     photo: str
-    
+
+class PatientPlan(BaseModel):
+    patient_id: int
+    full_name: str

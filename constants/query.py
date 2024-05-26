@@ -12,3 +12,9 @@ FROM Usuario usu
 INNER JOIN Paciente pa ON pa.UsuarioId = usu.UsuarioId
 WHERE pa.UsuarioId = :patientId
 """
+    
+QUERY_GET_PATIENT_BY_ID = """SELECT P.pacienteId, CONCAT(U.nombre,' ', U.apellidos) as fullName
+                                FROM Paciente P INNER JOIN Usuario U
+                                ON P.usuarioId = U.usuarioId
+                                WHERE P.pacienteId = :id        
+                        """
