@@ -5,3 +5,9 @@ QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID = """SELECT P.pacienteId, U.nombre, U
     ON P.pacienteid = HD.pacienteId INNER JOIN Usuario U
     ON P.usuarioid = U.usuarioid
     WHERE PP.profesionalId = :profesional_id"""
+    
+QUERY_GET_PATIENT_BY_ID = """SELECT P.pacienteId, CONCAT(U.nombre,' ', U.apellidos) as fullName
+                                FROM Paciente P INNER JOIN Usuario U
+                                ON P.usuarioId = U.usuarioId
+                                WHERE P.pacienteId = :id        
+                        """

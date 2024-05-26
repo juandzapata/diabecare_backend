@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database.db import Base, engine
-from routers import patient, personalized_planes, recomendation, user, account, file
+from routers import patient, personalized_planes, recomendation, user, account, file, health_professional
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -21,6 +21,7 @@ app.include_router(recomendation.router, tags=["Recomendations"], prefix="/recom
 app.include_router(personalized_planes.router, tags=["Personalized Planes"], prefix="/personalized_planes")
 app.include_router(patient.router, tags=["Patients"], prefix="/patients")
 app.include_router(file.router, tags=["Files"], prefix="/files")
+app.include_router(health_professional.router, tags=["Health Professional"], prefix="/health_professional")
 
 @app.get("/")
 async def root():

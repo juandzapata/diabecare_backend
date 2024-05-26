@@ -1,10 +1,10 @@
 from datetime import date
-from constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID 
+from constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID, QUERY_GET_PATIENT_BY_ID 
 
 from sqlalchemy import text
-from schemas.patient import PacienteLista
+from models.base import Paciente
+from schemas.patient import PacienteLista, PatientPlan
 def get_info_patients_by_professional_id(db, profesional_id: int) -> list[PacienteLista]:
-    print(profesional_id)
     query = text(QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID)
     result = db.execute(query, {"profesional_id": profesional_id}).fetchall()
     
@@ -28,3 +28,12 @@ def get_info_patients_by_professional_id(db, profesional_id: int) -> list[Pacien
         result_list.append(paciente)
     
     return result_list
+
+def get_patient(id :int, db) -> PatientPlan:
+    query = text(QUERY_GET_PATIENT_BY_ID)
+    result = db.execute(query, {"id": id}).fetchone()
+    patient = PatientPlan(
+        patient_id=result.pacienteId,
+        full_name=result.fullName
+    )
+    return patient
