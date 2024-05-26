@@ -2,11 +2,7 @@ from datetime import date
 from pydantic.types import Decimal
 from pydantic import BaseModel
 
-<<<<<<< HEAD
 class PacientList(BaseModel):
-=======
-class PacienteLista(BaseModel):
->>>>>>> juliana
     patient_id: int
     name: str
     last_name: str

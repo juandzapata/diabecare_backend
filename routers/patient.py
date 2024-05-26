@@ -2,14 +2,9 @@ from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from database.db import get_db
-<<<<<<< HEAD
-from schemas.patient import PacientList
-=======
-from schemas.patient import PacienteLista, PatientPlan
->>>>>>> juliana
+from schemas.patient import PacientList, PatientPlan
 from services.health_professional import get_patients
 from sqlalchemy.orm import Session
-
 from services.patient import get_patient
 
 
