@@ -7,6 +7,7 @@ import firebase_admin
 from firebase_admin import credentials
 from routers import patient, personalized_planes, recomendation, user, file
 from routers import user, account
+import uvicorn
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -48,3 +49,9 @@ app.include_router(file.router, tags=["Files"], prefix="/files")
 async def root():
     return {"message": "Bienvenido al servidor de DiabeCare"}
 
+port = int(os.environ.get("PORT", 8000))
+
+if __name__ == "__main__":
+    kwargs = {"host": "localhost", "port": port}
+    kwargs.update({"debug": True, "reload": True})
+    uvicorn.run('main:app', reload=True)
