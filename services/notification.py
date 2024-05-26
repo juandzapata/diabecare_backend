@@ -4,7 +4,7 @@ from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, TokenDeviceOut
 from services import recomendation as recomendationService
-from services import patient
+from services import patient, health_professional
 from models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
 
@@ -14,16 +14,18 @@ def send_notification (plan: PersonalizedPlanCreate, db):
     user_patient_id = user_patient[FIRST_ELEMENT_INDEX]
     plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
     device_id = db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
-    user_professional = patient.get_professional_by_patient_id(plan.pacienteId, db)
+    user_professional = health_professional.get_user_professional_by_id(plan.profesionalSaludId, db)
     message = create_message(user_patient, user_professional, plan_id , device_id, db)
     return send_notification_user(message)
 
 def create_message(patient: Usuario, professional: Usuario, plan_id: int, deviceId: str, db) -> NotificationMessage:
     INCREMENT = 1
+    print("PPPatient: ", patient)
+    print("PPProfesional: ", professional.__dict__)
     recomendations = recomendationService.get_recomendarions_by_plan_id(plan_id, db)
     message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
     for recomendation_index in range(len(recomendations)):
-        message += f" {recomendation_index + INCREMENT}.  {recomendations[recomendation_index].titulo}. \n"
+        message += f" {recomendation_index + INCREMENT}. {recomendations[recomendation_index].titulo} - Hora: {recomendations[recomendation_index].horaEjecucion}. \n"
     message = NotificationMessage(
         title = messages.CREATE_PLAN,
         body = message,

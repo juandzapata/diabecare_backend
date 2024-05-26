@@ -31,7 +31,7 @@ firebase_admin.initialize_app(cred)
 app.title = "DiabeCare API"
 origins = [os.getenv("ORIGIN_DEVICE"),os.getenv("ORIGIN_FRONTEND_DEFAULT"), os.getenv("ORIGIN_FRONTEND_SECOND")]
 print("ORIGINS",origins)
-
+origins = ["*"]
 app.add_middleware(CORSMiddleware,allow_origins=origins,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
 
 # Routers
