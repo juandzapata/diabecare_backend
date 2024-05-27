@@ -10,7 +10,7 @@ QUERY_GET_USER_PATIENT_BY_ID = """
 SELECT usu.usuarioid,usu.nombre,usu.apellidos, usu.correo, usu.contraseña, usu.sexo, usu.foto, usu.fechaNacimiento, usu.rolId
 FROM Usuario usu
 INNER JOIN Paciente pa ON pa.UsuarioId = usu.UsuarioId
-WHERE pa.UsuarioId = :patientId
+WHERE pa.pacienteid = :patientId
 """
     
 QUERY_GET_PATIENT_BY_ID = """SELECT P.pacienteId, CONCAT(U.nombre,' ', U.apellidos) as fullName

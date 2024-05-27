@@ -4,9 +4,10 @@ from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, TokenDeviceOut
 from services import recomendation as recomendationService
-from services import patient
+from services import patient, health_professional
 from models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
+from services.utils import convert_time_to_12_hour_format
 
 
 def send_notification (plan: PersonalizedPlanCreate, db):
@@ -14,16 +15,20 @@ def send_notification (plan: PersonalizedPlanCreate, db):
     user_patient_id = user_patient[FIRST_ELEMENT_INDEX]
     plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
     device_id = db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
-    user_professional = patient.get_professional_by_patient_id(plan.pacienteId, db)
+    user_professional = health_professional.get_user_professional_by_id(plan.profesionalSaludId, db)
     message = create_message(user_patient, user_professional, plan_id , device_id, db)
     return send_notification_user(message)
 
 def create_message(patient: Usuario, professional: Usuario, plan_id: int, deviceId: str, db) -> NotificationMessage:
     INCREMENT = 1
     recomendations = recomendationService.get_recomendarions_by_plan_id(plan_id, db)
+    hora = convert_time_to_12_hour_format(recomendations[0].horaEjecucion)
+    print("Horaaaa", hora)
     message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
     for recomendation_index in range(len(recomendations)):
-        message += f" {recomendation_index + INCREMENT}.  {recomendations[recomendation_index].titulo}. \n"
+        hora = convert_time_to_12_hour_format(recomendations[recomendation_index].horaEjecucion)
+        print("Horaaaa", hora)
+        message += f" {recomendation_index + INCREMENT}. {recomendations[recomendation_index].titulo} - Hora: {hora}. \n"
     message = NotificationMessage(
         title = messages.CREATE_PLAN,
         body = message,
@@ -48,26 +53,21 @@ def send_notification_user(message:NotificationMessage):
 
 
 def post_token(token: tokenCreate, database) -> TokenDeviceOut:
-    # Verificar si ya existe un token para el usuario
     existing_token = database.query(TokenUsuario).filter_by(usuarioId=token.userId).first()
 
     if existing_token:
-        # Actualizar el token existente
         existing_token.tokenDispositivo = token.token
         db_token = existing_token
     else:
-        # Crear un nuevo token
         db_token = TokenUsuario(
             tokenDispositivo=token.token,
             usuarioId=token.userId
         )
         database.add(db_token)
     
-    # Guardar los cambios en la base de datos
     database.commit()
     database.refresh(db_token)
     
-    # Crear la respuesta
     token_device_out = TokenDeviceOut(
         usuarioId=db_token.usuarioId,
         tokenDispositivo=db_token.tokenDispositivo,
