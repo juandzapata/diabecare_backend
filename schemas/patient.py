@@ -17,3 +17,22 @@ class PacientList(BaseModel):
 class PatientPlan(BaseModel):
     patient_id: int
     full_name: str
+
+class PatientHistoryCreate(BaseModel):
+    patient_id: int
+    glucose_level: int
+    physical_activity_hours: int
+    last_medication: str
+    last_meal: str
+
+class PatientHistoryRead(BaseModel):
+    id: int
+    patient_id: int
+    recorded_at: str
+    glucose_level: int
+    physical_activity_hours: int
+    last_medication: str
+    last_meal: str
+
+    class Config:
+        orm_mode = True

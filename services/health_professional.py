@@ -3,15 +3,16 @@ from data.models.base import ProfesionalSalud, Usuario
 from schemas.patient import PacientList
 from services.patient import get_info_patients_by_professional_id
 from sqlalchemy.orm import Session
+from utils.constants.default_values import NOT_ID, COUNT_ELEMENTS_ZERO
 
 
-def get_patients(usuario_id: int, db) -> list[PacientList]:
-    profesional_id = get_professional_id_by_user_id(db, usuario_id)
-    if profesional_id != 0:
-        lista_pacientes = get_info_patients_by_professional_id(db, profesional_id)
-        if len(lista_pacientes) > 0:
-            return lista_pacientes
-    return None
+def get_patients(user_id: int, db) -> list[PacientList]:
+    professional_id = get_professional_id_by_user_id(db, user_id)
+    if professional_id != NOT_ID:
+        patient_list = get_info_patients_by_professional_id(db, professional_id)
+        if len(patient_list) > COUNT_ELEMENTS_ZERO:
+            return patient_list
+    return []
     
 def get_professional_id_by_user_id(db: Session, usuario_id: int) -> int:
 
