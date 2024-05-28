@@ -1,24 +1,11 @@
 from data.models.base import Usuario
-from schemas.user import GetUser
+from data.repositories.user_repository import UserRepository
+from schemas.user import UserRead
 
-
-def todos_los_usuarios(db) -> list[GetUser]:
-    result = []
-    usuarios = db.query(Usuario).all()
-    for usuario in usuarios:
-        try:
-            result.append(GetUser(
-            id=usuario.usuarioId,
-            nombre=usuario.nombre,
-            apellidos=usuario.apellidos,
-            correo=usuario.correo,
-            contrasena=usuario.contraseña,
-            sexo=usuario.sexo,
-            ciudad=usuario.ciudad,
-            foto=usuario.foto,
-            fecha_nacimiento=usuario.fechaNacimiento,
-        ))
-        except Exception as e:
-            print(e)
-            continue
-    return result
+class UserService:
+    def __init__(self, db):
+        self.user_repository = UserRepository(db)
+        
+    def all_users(self, db) -> list[UserRead]:
+        users = self.user_repository.get_all_users(db)
+        return [UserRead.from_orm(user) for user in users]

@@ -2,10 +2,10 @@ import datetime
 import os
 import time
 from jose import jwt
-from schemas.user import UserGetLogin
+from schemas.user import UserRead
 
 
-def create_token(user: UserGetLogin) -> str:
+def create_token(user: UserRead) -> str:
     key_hash = os.environ.get('KEY_HASH_TOKEN')
     token: str = jwt.encode(
         claims=user.model_dump(),
@@ -14,7 +14,7 @@ def create_token(user: UserGetLogin) -> str:
     )
     return token
 
-def create_token_email(user: UserGetLogin) -> str:
+def create_token_email(user: UserRead) -> str:
     payload = user.model_dump()
     key_hash = os.environ.get('KEY_HASH_TOKEN')
     payload['exp'] = int(time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=3)).timetuple()))

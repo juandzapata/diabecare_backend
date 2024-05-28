@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 from pydantic import BaseModel
 
 class GetUser(BaseModel):
@@ -12,7 +13,7 @@ class GetUser(BaseModel):
     foto: str
     fecha_nacimiento: date
     
-class UserGetLogin(BaseModel):
+class UserRead(BaseModel):
     usuarioId: int
     nombre: str
     apellidos: str
@@ -21,19 +22,9 @@ class UserGetLogin(BaseModel):
     sexo: str
     ciudad: str
     foto: str
-    fechaNacimiento: str
-    rolId: int
+    fechaNacimiento: date
+    rolId: Optional[int]
 
-    def model_dump(self):
-        return {
-            "usuarioId": self.usuarioId,
-            "nombre": self.nombre,
-            "apellidos": self.apellidos,
-            "correo": self.correo,
-            "contrasena": self.contraseña,
-            "sexo": self.sexo,
-            "ciudad": self.ciudad,
-            "foto": self.foto,
-            "fecha_nacimiento": self.fechaNacimiento,
-            "rol": self.rolId
-        }
+    class Config:
+        orm_mode = True
+        from_attributes = True
