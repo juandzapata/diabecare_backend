@@ -1,11 +1,11 @@
-from constants  import messages
-from constants.default_values import FIRST_ELEMENT_INDEX
+from utils.constants  import messages
+from utils.constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, TokenDeviceOut
 from services import recomendation as recomendationService
 from services import patient, health_professional
-from models.base import TokenUsuario, Usuario
+from data.models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
 from services.utils import convert_time_to_12_hour_format
 

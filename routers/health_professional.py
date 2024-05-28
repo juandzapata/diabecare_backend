@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from requests import Session
 
-from database.db import get_db
+from data.database.db import get_db
 from services.health_professional import get_professional_id_by_user_id
 
 

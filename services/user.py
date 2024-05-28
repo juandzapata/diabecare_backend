@@ -1,4 +1,4 @@
-from models.base import Usuario
+from data.models.base import Usuario
 from schemas.user import GetUser
 
 

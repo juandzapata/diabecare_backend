@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from database.db import get_db
+from data.database.db import get_db
 from schemas.recomendation import RecomendationCreate, RecomendationOut 
 from services.recomendation import post_recomendation
 from fastapi.responses import JSONResponse

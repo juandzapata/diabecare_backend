@@ -1,6 +1,6 @@
 from schemas.recomendation import RecomendationCreate, RecomendationOut
 from sqlalchemy.orm import Session
-from models.base import Recomendacion
+from data.models.base import Recomendacion
 
 def post_recomendation (recomendation: RecomendationCreate, database: Session) -> RecomendationOut:
     db_recomendation: Recomendacion = Recomendacion(**recomendation.model_dump())

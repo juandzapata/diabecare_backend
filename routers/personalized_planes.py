@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
-from database.db import get_db
+from data.database.db import get_db
 from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
 from sqlalchemy.orm import Session
 from services.personalized_planes import post_personalized_plan
