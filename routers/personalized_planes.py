@@ -12,8 +12,8 @@ async def create_plan_personalizado(plan: PersonalizedPlanCreate, db: Session = 
     plan_creado = post_personalized_plan(plan, db)
     if plan_creado is None:
         raise HTTPException(
-            status_code = status.HTTP_409_CONFLICT,
-            detail = f'Plan personalizado is not added to the database'
+            status_code = status.HTTP_401_UNAUTHORIZED,
+            detail = f'No puedes crear un plan para un paciente que no tienes asignado'
         )
     return JSONResponse( 
         status_code = status.HTTP_201_CREATED,
