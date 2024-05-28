@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from constants.default_values import DEFAULT_STATE_RECOMENDATION
+from utils.constants.default_values import DEFAULT_STATE_RECOMENDATION
 
 class RecomendationCreate(BaseModel):
     planId: int

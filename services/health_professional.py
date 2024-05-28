@@ -1,5 +1,5 @@
 from sqlalchemy import text
-from models.base import ProfesionalSalud, Usuario
+from data.models.base import ProfesionalSalud, Usuario
 from schemas.patient import PacientList
 from services.patient import get_info_patients_by_professional_id
 from sqlalchemy.orm import Session

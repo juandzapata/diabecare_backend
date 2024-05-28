@@ -1,9 +1,9 @@
 from datetime import date
-from constants.messages import CREATE_PLAN
+from utils.constants.messages import CREATE_PLAN
 from fastapi import HTTPException
 from schemas.notification import NotificationMessage
 from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
-from models.base import PlanesPersonalizados, ProfesionalPaciente, TokenUsuario
+from data.models.base import PlanesPersonalizados, ProfesionalPaciente, TokenUsuario
 from services import recomendation, notification
 
 def post_personalized_plan (plan: PersonalizedPlanCreate, database) -> PersonalizedPlanOut:

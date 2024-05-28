@@ -1,5 +1,5 @@
 import os
-from models.base import Usuario
+from data.models.base import Usuario
 from schemas.user import UserGetLogin
 from utils import auth, jwt as jwt
 from schemas.credentials_login import CredentialsLogin

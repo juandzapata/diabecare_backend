@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.responses import JSONResponse
-from database.db import get_db
+from data.database.db import get_db
 from schemas.notification import NotificationMessage
 from schemas.notification import tokenCreate
 from sqlalchemy.orm import Session

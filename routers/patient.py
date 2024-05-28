@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from database.db import get_db
+from data.database.db import get_db
 from schemas.patient import PacientList, PatientPlan
 from services.health_professional import get_patients
 from sqlalchemy.orm import Session

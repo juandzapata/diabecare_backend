@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
-from database.db import get_db
-from middlewares.guards import NeedToken
+from data.database.db import get_db
+from routers.middlewares.guards import NeedToken
 from schemas.credentials_login import CredentialsLogin
 from sqlalchemy.orm import Session
 from services import account

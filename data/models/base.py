@@ -1,5 +1,5 @@
 from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String, Time
-from database.db import Base
+from data.database.db import Base
 from sqlalchemy.orm import relationship
     
 class Usuario(Base):
