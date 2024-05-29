@@ -76,7 +76,7 @@ class HistorialDatos(Base):
     horasActividadFisica = Column(DECIMAL(10, 2))
     medicamento = Column(String(100))
     comida = Column(String(255))
-    fecha = Column(Date)
+    fecha = Column(DateTime)
     pacienteId = Column(Integer, ForeignKey('Paciente.pacienteId'))
     paciente = relationship("Paciente")
 

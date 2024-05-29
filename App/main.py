@@ -40,7 +40,6 @@ app.include_router(patient.router, tags=["Pacientes"], prefix="/pacientes")
 app.include_router(notification.router, tags=["Notifications"], prefix="/notifications")
 app.include_router(recomendation.router, tags=["Recomendations"], prefix="/recomendations")
 app.include_router(personalized_planes.router, tags=["Personalized Planes"], prefix="/personalized_planes")
-app.include_router(patient.router, tags=["Patients"], prefix="/patients")
 app.include_router(file.router, tags=["Files"], prefix="/files")
 app.include_router(health_professional.router, tags=["Health Professional"], prefix="/health_professional")
 

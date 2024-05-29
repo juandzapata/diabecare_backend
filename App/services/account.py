@@ -8,7 +8,7 @@ class AccountService:
         self.user_repository = UserRepository(db)
 
     def login(self, credentials: CredentialsLogin, db) -> str | None:
-        user = self.user_repository.get_user_by_email(credentials.email, db)
+        user = self.user_repository.get_user_by_email(credentials.email)
         if user is None:
             return None
         if user and self.password_valid(credentials.password, user.contraseña):
