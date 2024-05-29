@@ -2,7 +2,7 @@ import datetime
 import os
 import time
 from jose import jwt
-from schemas.user import GetUser, UserRead
+from schemas.user import GetUser
 
 
 def create_token(user: GetUser) -> str:
@@ -25,7 +25,7 @@ def create_token_email(user: GetUser) -> str:
     )
     return token
 
-def validate_token(token: str) -> dict:
+def validate_token(token: str) -> dict | None:
     key_hash = os.environ.get('KEY_HASH_TOKEN')
     try:
         data: dict = jwt.decode(

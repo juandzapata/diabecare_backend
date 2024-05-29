@@ -14,6 +14,20 @@ class GetUser(BaseModel):
     fechaNacimiento: str
     rolId: Optional[int]
 
+    def model_dump(self):
+        return {
+            "id": self.usuarioId,
+            "nombre": self.nombre,
+            "apellidos": self.apellidos,
+            "correo": self.correo,
+            "contrasena": self.contraseña,
+            "sexo": self.sexo,
+            "ciudad": self.ciudad,
+            "foto": self.foto,
+            "fecha_nacimiento": self.fechaNacimiento
+        }
+
+
 class UserRead(BaseModel):
     usuarioId: int
     nombre: str
