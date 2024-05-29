@@ -1,7 +1,4 @@
-import os
-from data.models.base import Usuario
 from data.repositories.user_repository import UserRepository
-from schemas.user import UserGetLogin
 from utils import auth, jwt as jwt
 from schemas.credentials_login import CredentialsLogin
 from utils.mappers.user_mapper import UserMapper

@@ -1,13 +1,13 @@
 from data.models.base import Usuario
-from schemas.user import UserGetLogin
+from schemas.user import GetUser
 from utils.constants.default_values import NOT_ID
 
 
 class UserMapper:
 
     @staticmethod
-    def to_user_get_login(self, user: Usuario) -> UserGetLogin:
-        user_login = UserGetLogin(
+    def to_user_get_login(user: Usuario) -> GetUser:
+        user_login = GetUser(
                 usuarioId = user.usuarioId,
                 nombre = user.nombre,
                 apellidos = user.apellidos,
