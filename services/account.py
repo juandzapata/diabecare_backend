@@ -16,7 +16,8 @@ class AccountService:
             return None
         if user and self.password_valid(credentials.password, user.contraseña):
             user_get =  UserMapper.to_user_get_login(user)
-        return jwt.create_token(user_get)
+            return jwt.create_token(user_get)
+        return None
 
     def validate_token(self, token: str) -> dict | None:
         data_token = jwt.validate_token(token)

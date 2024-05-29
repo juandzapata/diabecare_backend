@@ -3,16 +3,17 @@ from typing import Optional
 from pydantic import BaseModel
 
 class GetUser(BaseModel):
-    id: int
+    usuarioId: int
     nombre: str
     apellidos: str
     correo: str
-    contrasena: str
+    contraseña: str
     sexo: str
     ciudad: str
     foto: str
-    fecha_nacimiento: date
-    
+    fechaNacimiento: str
+    rolId: Optional[int]
+
 class UserRead(BaseModel):
     usuarioId: int
     nombre: str
