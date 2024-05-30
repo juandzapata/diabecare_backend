@@ -13,5 +13,5 @@ class RecommendationRepository:
         self.db.refresh(db_recomendation)
         return db_recomendation.recomendacionId
     
-    def get_recomendarions_by_plan_id(self, plan_id: int) -> list[Recomendacion]:
+    def get_recomendations_by_plan_id(self, plan_id: int) -> list[Recomendacion]:
         return self.db.query(Recomendacion).filter(Recomendacion.planId == plan_id).all()

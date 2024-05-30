@@ -18,3 +18,12 @@ QUERY_GET_PATIENT_BY_ID = """SELECT P.pacienteId, CONCAT(U.nombre,' ', U.apellid
                                 ON P.usuarioId = U.usuarioId
                                 WHERE P.pacienteId = :id        
                         """
+QUERY_GET_PLANES_BY_PATIENT_ID = """SELECT P.planid, P.fechacreacion, CONCAT(U.nombre, ' ', U.apellidos) as full_name_professional
+                                        FROM PlanesPersonalizados P INNER JOIN ProfesionalPaciente PP
+                                        on P.profesionalPacienteId = PP.profesionalPacienteId
+                                        INNER JOIN ProfesionalSalud PS
+                                        on PS.profesionalsaludid = PP.profesionalId
+                                        INNER JOIN Usuario U
+                                        on U.usuarioid = PS.usuarioid
+                                        WHERE PP.pacienteId = :patient_id
+                                """ 

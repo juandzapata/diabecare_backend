@@ -1,8 +1,12 @@
 from datetime import date
+
+from sqlalchemy import text
+from data.repositories.patient_repository import PatientRepository
+from utils.constants.query import QUERY_GET_PLANES_BY_PATIENT_ID
 from data.repositories.recommendation_repository import RecommendationRepository
 from data.repositories.health_professional_repository import HealthProfessionalRepository
 from data.models.base import PlanesPersonalizados
-from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
+from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanList, PersonalizedPlanOut
 
 
 class PersonalizedPlanesRepository:
@@ -33,3 +37,26 @@ class PersonalizedPlanesRepository:
             plan.recomendaciones[i].planId = planId
             recommendation_repository = RecommendationRepository(self.db)
             recommendation_repository.post_recomendation(plan.recomendaciones[i])
+            
+    def get_planes_by_user_id(self, user_id: int) -> list[PersonalizedPlanList]:
+        patient_repository = PatientRepository(self.db)
+        patient_id = patient_repository.get_patient_id_by_user_id(user_id)
+        
+        if patient_id is None:
+            return None
+        
+        query = text(QUERY_GET_PLANES_BY_PATIENT_ID)
+        result = self.db.execute(query, {"patient_id": patient_id}).fetchall()
+        
+        result_list = []
+        
+        for row in result:
+            #Mapear
+            plan = PersonalizedPlanList(
+                planId=row[0],
+                creation_date=row[1],
+                full_name_professional=row[2]
+            )
+            result_list.append(plan)
+        
+        return result_list

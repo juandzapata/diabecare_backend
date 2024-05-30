@@ -13,8 +13,8 @@ class RecommendationService:
             return recommendation
         return None
 
-    def get_recomendarions_by_plan_id(self, plan_id: int) -> list[Recomendacion]:
-        recommendations = self.recommendation_repository.get_recomendarions_by_plan_id(plan_id)
+    def get_recomendations_by_plan_id(self, plan_id: int) -> list[Recomendacion]:
+        recommendations = self.recommendation_repository.get_recomendations_by_plan_id(plan_id)
         if len(recommendations) > COUNT_ELEMENTS_ZERO:
             return recommendations
         return None

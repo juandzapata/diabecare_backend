@@ -28,10 +28,16 @@ class PatientService:
             return user
         return None
 
-    def get_patient(self, user_id :int) -> PatientPlan:
-        patient = self.patient_repository.get_patient_by_user_id(user_id)
+    def get_patient(self, id :int) -> PatientPlan:
+        patient = self.patient_repository.get_patient_by_id(id)
         if patient:
             return patient
+        return None
+    
+    def get_patient_id_by_user_id(self, user_id: int) -> int | None:
+        patient_id = self.patient_repository.get_patient_id_by_user_id(user_id)
+        if patient_id:
+            return patient_id
         return None
     
     

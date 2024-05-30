@@ -29,7 +29,7 @@ async def get_patients_by_professional(user_id: int, db: Session = Depends(get_d
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Este profesional no tiene pacientes asignados."})
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patients)})
 
-@router.get("/patient_by_id/{id}", response_model=PatientPlan, summary="Get patient by user id")
+@router.get("/patient_by_id/{id}", response_model=PatientPlan, summary="Get patient by patient id")
 async def get_patient_by_id(id: int, db: Session = Depends(get_db)):
     service = PatientService(db)
     patient = service.get_patient(id)

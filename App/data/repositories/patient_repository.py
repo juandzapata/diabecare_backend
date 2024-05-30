@@ -1,8 +1,9 @@
 from datetime import date
 from sqlalchemy import text
+from utils.constants.default_values import NOT_ID
 from schemas.patient import PacientList, PatientPlan
 from utils.constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID, QUERY_GET_PATIENT_BY_ID, QUERY_GET_USER_PATIENT_BY_ID
-from data.models.base import HistorialDatos, Usuario
+from data.models.base import HistorialDatos, Paciente, Usuario
 
 
 class PatientRepository:
@@ -50,9 +51,9 @@ class PatientRepository:
         user = self.db.execute(query, {"patientId": patient_id}).first()
         return user
     
-    def get_patient_by_user_id(self, user_id :int) -> PatientPlan:
+    def get_patient_by_id(self, id :int) -> PatientPlan:
         query = text(QUERY_GET_PATIENT_BY_ID)
-        result = self.db.execute(query, {"id": user_id}).fetchone()
+        result = self.db.execute(query, {"id": id}).fetchone()
         
         #Mapear
         patient = PatientPlan(
@@ -60,3 +61,9 @@ class PatientRepository:
             full_name=result.fullName
         )
         return patient
+    
+    def get_patient_id_by_user_id(self, user_id: int) -> int:
+        patient = self.db.query(Paciente).filter(Paciente.usuarioId == user_id).first()
+        if patient.pacienteId != NOT_ID:
+            return patient.pacienteId
+        return None
