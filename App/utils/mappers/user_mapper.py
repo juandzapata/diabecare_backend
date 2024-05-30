@@ -17,7 +17,7 @@ class UserMapper:
                 ciudad = user.ciudad,
                 foto = user.foto,
                 fechaNacimiento = user.fechaNacimiento.__str__(),
-                rolId = NOT_ID
+                rolId = user.rolId
             )
         if user.rolId is not None:
             user_login.rolId = user.rolId

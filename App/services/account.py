@@ -7,7 +7,7 @@ class AccountService:
     def __init__(self, db):
         self.user_repository = UserRepository(db)
 
-    def login(self, credentials: CredentialsLogin, db) -> str | None:
+    def login(self, credentials: CredentialsLogin) -> str | None:
         user = self.user_repository.get_user_by_email(credentials.email)
         if user is None:
             return None
