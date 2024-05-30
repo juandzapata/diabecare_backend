@@ -1,35 +1,19 @@
-from datetime import date
-from utils.constants.messages import CREATE_PLAN
+from data.repositories.personalized_planes_repository import PersonalizedPlanesRepository
 from fastapi import HTTPException
-from schemas.notification import NotificationMessage
 from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
-from data.models.base import PlanesPersonalizados, ProfesionalPaciente, TokenUsuario
-from services import recomendation, notification
 
-def post_personalized_plan (plan: PersonalizedPlanCreate, database) -> PersonalizedPlanOut:
-    profesionalPaciente = get_professional_patient(plan.pacienteId, plan.profesionalSaludId, database)
-    if profesionalPaciente is None:
+
+class PersonalizedPlanesService:
+    def __init__(self, db):
+        self.planes_repository = PersonalizedPlanesRepository(db)
+        
+    def post_personalized_plan (self, plan: PersonalizedPlanCreate) -> PersonalizedPlanOut:
+        plan_created = self.planes_repository.post_personalized_plan(plan)
+        if plan_created:
+            return plan_created
         return None
-    db_plan: PlanesPersonalizados = PlanesPersonalizados(
-        profesionalPacienteId = profesionalPaciente.profesionalPacienteId,
-        fechaCreacion = date.today()
-    )
-
-    database.add(db_plan)
-    database.commit()
-    database.refresh(db_plan)
     
-    create_recommendations_for_plan(plan, db_plan.planId, database)
-    #notification.send_notification(plan, database)
-    return db_plan.planId
-
-def create_recommendations_for_plan (plan: PersonalizedPlanCreate, planId: int , database) -> None:
-    for i in range(len(plan.recomendaciones)):
-        plan.recomendaciones[i].planId = planId
-        recomendation.post_recomendation(plan.recomendaciones[i], database)
-
-def get_professional_patient (pacienteId: int, profesionalSaludId: int, database) -> ProfesionalPaciente:
-    return database.query(ProfesionalPaciente).filter(ProfesionalPaciente.pacienteId == pacienteId, ProfesionalPaciente.profesionalId == profesionalSaludId).first()
+        
 
 
 

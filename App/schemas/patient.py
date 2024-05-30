@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from pydantic.types import Decimal
 from pydantic import BaseModel, validator
 
@@ -6,7 +6,7 @@ class PacientList(BaseModel):
     patient_id: int
     name: str
     last_name: str
-    date: date
+    date: datetime
     age: int
     glucose_level: Decimal
     physical_activity_hours: Decimal
