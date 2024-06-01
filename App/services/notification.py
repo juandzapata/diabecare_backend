@@ -23,8 +23,8 @@ class NotificationService:
 
     def create_message(self, patient: Usuario, professional: Usuario, plan_id: int, device_id: str) -> NotificationMessage:
         INCREMENT = 1
-        recommendations = recomendationService.get_recomendarions_by_plan_id(plan_id, self.db)
-        hora = convert_time_to_12_hour_format(recommendations[0].horaEjecucion)
+        recommendations = recomendationService.get_recommendations_by_plan_id(plan_id, self.db)
+        hora = convert_time_to_12_hour_format(recommendations[FIRST_ELEMENT_INDEX].horaEjecucion)
         print("Horaaaa", hora)
         message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
         for recommendation_index in range(len(recommendations)):

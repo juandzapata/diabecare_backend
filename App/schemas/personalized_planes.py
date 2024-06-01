@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
 from datetime import date
-from schemas.recomendation import RecommendationCreate
+from schemas.recommendation import RecommendationCreate
 
 class PersonalizedPlanCreate(BaseModel):
     pacienteId: int
