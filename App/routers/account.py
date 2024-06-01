@@ -22,7 +22,8 @@ def login(credentials: CredentialsLogin, db: Session = Depends(get_db)):
 
 @router.get('/validate_token', summary='Validate a token in the database.')
 def validate_token(token: HTTPBearer = Depends(NeedToken()), db: Session = Depends(get_db)):
-    token_data = AccountService(token=token.credentials)
+    service = AccountService(db)
+    token_data = service.validate_token(token.credentials)
     if token_data is None:
         return JSONResponse(status_code=404, content={"message": "token invalido"})
     return JSONResponse(status_code=200, content=token_data)
