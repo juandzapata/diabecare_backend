@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from data.database.db import get_db
-from schemas.recomendation import RecomendationCreate, RecomendationOut 
+from schemas.recomendation import RecommendationCreate, RecommendationOut 
 from services.recomendation import post_recomendation
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -9,7 +9,7 @@ from fastapi.encoders import jsonable_encoder
 router = APIRouter()
 
 @router.post("/recomendation", summary="Create a recomendation")
-async def create_recomendation(recomendation: RecomendationCreate, db: Session = Depends(get_db)):
+async def create_recomendation(recomendation: RecommendationCreate, db: Session = Depends(get_db)):
     recomendacion_creada = post_recomendation(recomendation, db)
     if recomendacion_creada is None:
         raise HTTPException(
