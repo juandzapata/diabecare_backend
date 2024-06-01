@@ -7,13 +7,13 @@ class RecommendationService:
     def __init__(self, db):
         self.recommendation_repository = RecommendationRepository(db)
         
-    def post_recomendation (self, recomendation: RecomendationCreate) -> RecomendationOut:
-        recommendation = self.recommendation_repository.post_recomendation(recomendation)
+    def post_recommendation (self, recommendation: RecomendationCreate) -> RecomendationOut:
+        recommendation = self.recommendation_repository.post_recomendation(recommendation)
         if recommendation != NOT_ID:
             return recommendation
         return None
 
-    def get_recomendations_by_plan_id(self, plan_id: int) -> list[Recomendacion]:
+    def get_recommendations_by_plan_id(self, plan_id: int) -> list[Recomendacion] | None:
         recommendations = self.recommendation_repository.get_recomendations_by_plan_id(plan_id)
         if len(recommendations) > COUNT_ELEMENTS_ZERO:
             return recommendations
