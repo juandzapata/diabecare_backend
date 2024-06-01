@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from pydantic.types import Decimal
 from pydantic import BaseModel, validator
 
