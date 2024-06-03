@@ -40,4 +40,3 @@ class PatientService:
             return patient_id
         return None
     
-    

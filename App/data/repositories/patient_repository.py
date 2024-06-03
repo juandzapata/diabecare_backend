@@ -21,7 +21,7 @@ class PatientRepository:
     
     def get_patients_by_professional_id(self, professional_id: int) -> list[PacientList]:
         query = text(QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID)
-        result = self.db.execute(query, {"profesional_id": professional_id}).fetchall()
+        result = self.db.execute(query, {"professional_id": professional_id}).fetchall()
         
         result_list = []
         
