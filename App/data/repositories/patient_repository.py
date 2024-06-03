@@ -1,8 +1,8 @@
 from datetime import date
 from sqlalchemy import text
 from utils.constants.default_values import NOT_ID
-from schemas.patient import PacientList, PatientPlan
-from utils.constants.query import QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID, QUERY_GET_PATIENT_BY_ID, QUERY_GET_USER_PATIENT_BY_ID
+from schemas.patient import PacientList, PatientDataReport, PatientPlan
+from utils.constants.query import QUERY_GET_DATA_REPORT, QUERY_GET_INFO_PATIENTS_BY_PROFESSIONAL_ID, QUERY_GET_PATIENT_BY_ID, QUERY_GET_USER_PATIENT_BY_ID
 from data.models.base import HistorialDatos, Paciente, Usuario
 
 
@@ -67,3 +67,20 @@ class PatientRepository:
         if patient.pacienteId != NOT_ID:
             return patient.pacienteId
         return None
+    
+    def get_data_report(self, patient_id: int) -> PatientDataReport:
+        query = text(QUERY_GET_DATA_REPORT)
+        result = self.db.execute(query, {"patient_id": patient_id}).fetchone()
+        
+        edad = date.today().year - result.fechaNacimiento.year
+        data = PatientDataReport(
+            full_name=result.full_name,
+            correo=result.correo,
+            sexo=result.sexo,
+            edad=edad,
+            avg_nivelGlucosa=result.avg_nivelGlucosa,
+            avg_horasActividadFisica=result.avg_horasActividadFisica,
+            medicamento_mas_consumido=result.medicamento_mas_consumido,
+            comida_mas_consumida=result.comida_mas_consumida
+        )
+        return data

@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status
+from datetime import date
+from services.pdf import PdfService
+from fastapi import APIRouter, Depends, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from data.database.db import get_db
@@ -36,3 +38,19 @@ async def get_patient_by_id(id: int, db: Session = Depends(get_db)):
     if patient is None:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "No se encontró el paciente."})
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patient)})
+
+@router.post("/generate_report/", summary="Generate report", response_class=Response)
+async def generate_pdf(patient_id: int, db: Session = Depends(get_db)):
+    service = PatientService(db)
+    patient = service.get_data_report(patient_id)
+    if patient is None:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "No se encontró el paciente."})
+    
+    service_pdf = PdfService()
+    pdf_buffer = service_pdf.generate_pdf(patient)
+    date_created_str = date.today().strftime("%d-%m-%Y")
+    headers = {
+        "Content-Disposition": f"attachment; filename={'Reporte-' + patient.full_name + '-' + date_created_str}.pdf"
+    }
+    
+    return Response(pdf_buffer.read(), media_type='application/pdf', headers=headers)

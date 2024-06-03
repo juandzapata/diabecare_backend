@@ -2,7 +2,7 @@ from datetime import datetime
 from data.repositories.patient_repository import PatientRepository
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO, NOT_ID
 from data.models.base import HistorialDatos, Usuario 
-from schemas.patient import PacientList, PatientHistoryCreate, PatientHistoryRead, PatientPlan
+from schemas.patient import PacientList, PatientDataReport, PatientHistoryCreate, PatientHistoryRead, PatientPlan
 
 
 class PatientService:
@@ -40,3 +40,8 @@ class PatientService:
             return patient_id
         return None
     
+    def get_data_report(self, patient_id: int) -> PatientDataReport | None:
+        patient = self.patient_repository.get_data_report(patient_id)
+        if patient:
+            return patient
+        return None

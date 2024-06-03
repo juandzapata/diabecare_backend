@@ -36,3 +36,29 @@ QUERY_GET_PLANES_BY_PATIENT_ID = """SELECT P.planid, P.fechacreacion, CONCAT(U.n
                                         on U.usuarioid = PS.usuarioid
                                         WHERE PP.pacienteId = :patient_id
                                 """ 
+                                
+QUERY_GET_DATA_REPORT="""SELECT
+    CONCAT(U.nombre, ' ', U.apellidos) AS full_name,
+    U.correo,
+    U.sexo,
+    U.fechaNacimiento,
+    FORMAT(AVG(HD.nivelGlucosa), 'N1') AS avg_nivelGlucosa,
+    FORMAT(AVG(HD.horasActividadFisica), 'N1') AS avg_horasActividadFisica,
+    (SELECT TOP 1 HD1.medicamento
+     FROM HistorialDatos HD1
+     WHERE HD1.pacienteId = P.pacienteid
+     GROUP BY HD1.medicamento
+     ORDER BY COUNT(HD1.medicamento) DESC) AS medicamento_mas_consumido,
+    (SELECT TOP 1 HD2.comida
+     FROM HistorialDatos HD2
+     WHERE HD2.pacienteId = P.pacienteid
+     GROUP BY HD2.comida
+     ORDER BY COUNT(HD2.comida) DESC) AS comida_mas_consumida
+FROM Usuario U
+INNER JOIN Paciente P ON U.usuarioid = P.usuarioid
+INNER JOIN HistorialDatos HD ON P.pacienteid = HD.pacienteId
+WHERE P.pacienteid = :patient_id
+GROUP BY U.nombre, U.apellidos, U.correo, U.sexo, U.fechaNacimiento, P.pacienteid;
+
+
+"""
