@@ -43,3 +43,14 @@ class PatientHistoryRead(BaseModel):
     class Config:
         orm_mode = True
         from_attributes = True
+
+
+class PatientDataReport(BaseModel):
+    full_name: str
+    correo: str
+    sexo: str
+    edad: int
+    avg_nivelGlucosa: Decimal
+    avg_horasActividadFisica: Decimal
+    medicamento_mas_consumido: str
+    comida_mas_consumida: str
