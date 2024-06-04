@@ -24,7 +24,8 @@ class GetUser(BaseModel):
             "sexo": self.sexo,
             "ciudad": self.ciudad,
             "foto": self.foto,
-            "fecha_nacimiento": self.fechaNacimiento
+            "fecha_nacimiento": self.fechaNacimiento,
+            "rolId": self.rolId
         }
 
 
