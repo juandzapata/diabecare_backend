@@ -2,6 +2,7 @@ from datetime import date
 from io import BytesIO
 import os
 import textwrap
+from utils.constants.default_values import RUTA_IMAGENES
 from data.repositories.patient_repository import PatientRepository
 from schemas.patient import PatientDataReport
 from reportlab.lib.utils import ImageReader
@@ -83,19 +84,19 @@ class PdfService:
         grey_color = Color(128/255, 128/255, 128/255)
         pdf.setFont("Helvetica", 8)
         pdf.setFillColor(grey_color)
-        pdf.drawString(440, 10, f" Realizado por DiabeCare Platform")
+        pdf.drawString(440, 10, " Realizado por DiabeCare Platform")
 
         pdf.setFont("Helvetica", 12)
         pdf.drawString(435, 115, "(606) 8701096")
         pdf.drawString(435, 80, "contact@diabecare.com")
         pdf.drawString(435, 45, "www.diabecare.com")
 
-        image_logo = os.path.join("utils/assets/images", "logo_diabacare_blanco.png")
+        image_logo = os.path.join(RUTA_IMAGENES, "logo_diabacare_blanco.png")
 
-        image_path_banner_inferior = os.path.join("utils/assets/images", "banner_inferior_izquierdo.png")
-        image_path_banner_superior = os.path.join("utils/assets/images", "banner_superior_derecho.png")
-        image_path_firma = os.path.join("utils/assets/images", "firma.png")
-        image_path_icons = os.path.join("utils/assets/images", "contac_icons.png")
+        image_path_banner_inferior = os.path.join(RUTA_IMAGENES, "banner_inferior_izquierdo.png")
+        image_path_banner_superior = os.path.join(RUTA_IMAGENES, "banner_superior_derecho.png")
+        image_path_firma = os.path.join(RUTA_IMAGENES, "firma.png")
+        image_path_icons = os.path.join(RUTA_IMAGENES, "contac_icons.png")
 
         try:
             image = ImageReader(image_logo)
