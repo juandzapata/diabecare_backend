@@ -1,6 +1,8 @@
 from datetime import datetime
 import unittest
 
+
+from pydantic import ValidationError
 from requests import Session
 
 from data.database.db import SessionLocal
@@ -32,6 +34,18 @@ class PatientServiceTest(unittest.TestCase):
         self.assertEqual(result.comida, history_create.comida)
         self.assertIsNotNone(result.fecha)
         self.assertIsInstance(result.fecha, datetime)
+    
+    def test_create_incorrect_history(self):
+        with self.assertRaises(ValidationError):
+            history_create = PatientHistoryCreate(
+                pacienteId=7,
+                nivelGlucosa="abc",
+                horasActividadFisica=27,
+                medicamento="TEST",
+                comida="TEST"
+            )
+            self.patient_service.create_history(history_create)
+
 
 if __name__ == '__main__':
     unittest.main()
