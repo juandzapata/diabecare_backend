@@ -27,18 +27,18 @@ class PdfService:
         
         pdf.setFont("Helvetica", 12)
         pdf.drawString(100, 560, f"Nombre: {patient_data.full_name}")
-        pdf.drawString(100, 540, f"Correo: {patient_data.correo}")
-        pdf.drawString(380, 560, f"Género: {patient_data.sexo}")
-        pdf.drawString(380, 540, f"Edad: {patient_data.edad}")
+        pdf.drawString(100, 540, f"Correo: {patient_data.email}")
+        pdf.drawString(380, 560, f"Género: {patient_data.gender}")
+        pdf.drawString(380, 540, f"Edad: {patient_data.age}")
         
         
         pdf.setFont("Helvetica-Bold", 12)
         pdf.drawString(100, 490, "Estadísticas de salud")
         pdf.setFont("Helvetica", 12)
-        pdf.drawString(100, 470, f"Nivel promedio de glucosa: {patient_data.avg_nivelGlucosa} mg/dL")
-        pdf.drawString(100, 450, f"Horas promedio de actividad física: {patient_data.avg_horasActividadFisica} horas")
-        pdf.drawString(100, 430, f"Medicamento más consumido: {patient_data.medicamento_mas_consumido}")
-        pdf.drawString(100, 410, f"Comida más consumida: {patient_data.comida_mas_consumida}")
+        pdf.drawString(100, 470, f"Nivel promedio de glucosa: {patient_data.average_glucose_level} mg/dL")
+        pdf.drawString(100, 450, f"Horas promedio de actividad física: {patient_data.average_physical_activity_hours} horas")
+        pdf.drawString(100, 430, f"Medicamento más consumido: {patient_data.most_consumed_medication}")
+        pdf.drawString(100, 410, f"Comida más consumida: {patient_data.most_consumed_food}")
         
         text = "Este reporte ha sido generado con el objetivo de proporcionar un análisis detallado de la salud del paciente. La información contenida en este documento es confidencial y está destinada exclusivamente para uso del paciente y del profesional de salud asignado."
         x = 100
