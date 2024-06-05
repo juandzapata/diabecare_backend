@@ -47,10 +47,10 @@ class PatientHistoryRead(BaseModel):
 
 class PatientDataReport(BaseModel):
     full_name: str
-    correo: str
-    sexo: str
-    edad: int
-    avg_nivelGlucosa: Decimal
-    avg_horasActividadFisica: Decimal
-    medicamento_mas_consumido: str
-    comida_mas_consumida: str
+    email: str
+    gender: str
+    age: int
+    average_glucose_level: Decimal
+    average_physical_activity_hours: Decimal
+    most_consumed_medication: str
+    most_consumed_food: str
