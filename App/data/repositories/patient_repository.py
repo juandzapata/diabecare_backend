@@ -75,12 +75,12 @@ class PatientRepository:
         edad = date.today().year - result.fechaNacimiento.year
         data = PatientDataReport(
             full_name=result.full_name,
-            correo=result.correo,
-            sexo=result.sexo,
-            edad=edad,
-            avg_nivelGlucosa=result.avg_nivelGlucosa,
-            avg_horasActividadFisica=result.avg_horasActividadFisica,
-            medicamento_mas_consumido=result.medicamento_mas_consumido,
-            comida_mas_consumida=result.comida_mas_consumida
+            email=result.correo,
+            gender=result.sexo,
+            age=edad,
+            average_glucose_level=result.avg_nivelGlucosa,
+            average_physical_activity_hours=result.avg_horasActividadFisica,
+            most_consumed_medication=result.medicamento_mas_consumido,
+            most_consumed_food=result.comida_mas_consumida
         )
         return data

@@ -1,7 +1,8 @@
 from datetime import datetime
+from utils.mappers.patient_history_mapper import PatientHistoryMapper
 from data.repositories.patient_repository import PatientRepository
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO, NOT_ID
-from data.models.base import HistorialDatos, Usuario 
+from data.models.base import Usuario 
 from schemas.patient import PacientList, PatientDataReport, PatientHistoryCreate, PatientHistoryRead, PatientPlan
 
 
@@ -10,8 +11,9 @@ class PatientService:
         self.patient_repository = PatientRepository(db)
 
     def create_history(self, history_create: PatientHistoryCreate) -> PatientHistoryRead:
-        history = HistorialDatos(**history_create.__dict__)
-        history.fecha = datetime.today()
+        patient_id = self.get_patient_id_by_user_id(history_create.user_patient_id)
+        history_create.patient_id = patient_id
+        history = PatientHistoryMapper.to_patient_history_model(history_create)
         created_history =  self.patient_repository.create(history)
         return PatientHistoryRead.model_validate(created_history)
 

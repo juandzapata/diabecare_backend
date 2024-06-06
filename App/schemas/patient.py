@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from pydantic.types import Decimal
 from pydantic import BaseModel, validator
 
@@ -19,11 +20,12 @@ class PatientPlan(BaseModel):
     full_name: str
 
 class PatientHistoryCreate(BaseModel):
-    pacienteId: int
-    nivelGlucosa: int
-    horasActividadFisica: int
-    medicamento: str
-    comida: str
+    user_patient_id: int
+    patient_id: Optional[int]
+    glucose_level: int
+    hours_physical_activity: int
+    medication: str
+    food: str
 
 class PatientHistoryRead(BaseModel):
     historialDatosId: int
@@ -47,10 +49,10 @@ class PatientHistoryRead(BaseModel):
 
 class PatientDataReport(BaseModel):
     full_name: str
-    correo: str
-    sexo: str
-    edad: int
-    avg_nivelGlucosa: Decimal
-    avg_horasActividadFisica: Decimal
-    medicamento_mas_consumido: str
-    comida_mas_consumida: str
+    email: str
+    gender: str
+    age: int
+    average_glucose_level: Decimal
+    average_physical_activity_hours: Decimal
+    most_consumed_medication: str
+    most_consumed_food: str
