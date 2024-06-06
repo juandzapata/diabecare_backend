@@ -29,4 +29,4 @@ async def get_personalized_planes_by_user_id(user_id: int, db: Session = Depends
     planes = service.get_planes_by_user_id(user_id)
     if len(planes) > COUNT_ELEMENTS_ZERO:
         return JSONResponse(status_code = status.HTTP_200_OK, content = {'data': jsonable_encoder(planes)})
-    return JSONResponse(status_code = status.HTTP_404_NOT_FOUND, content = {'message': 'No se encontraton planes'})
+    return JSONResponse(status_code = status.HTTP_404_NOT_FOUND, content = {'message': 'No se encontraron planes'})

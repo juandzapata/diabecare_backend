@@ -28,6 +28,7 @@ class PatientService:
             return user
         return None
 
+    ##Generalizar
     def get_patient(self, id :int) -> PatientPlan:
         patient = self.patient_repository.get_patient_by_id(id)
         if patient:

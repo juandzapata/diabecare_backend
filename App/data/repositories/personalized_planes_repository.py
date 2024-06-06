@@ -48,7 +48,7 @@ class PersonalizedPlanesRepository:
         query = text(QUERY_GET_PLANES_BY_PATIENT_ID)
         result = self.db.execute(query, {"patient_id": patient_id}).fetchall()
         
-        result_list = []
+        result_list: list[PersonalizedPlanList] = []
         
         for row in result:
             #Mapear

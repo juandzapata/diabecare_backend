@@ -1,3 +1,4 @@
+from utils.constants.default_values import COUNT_ELEMENTS_ZERO
 from services.patient import PatientService
 from data.repositories.personalized_planes_repository import PersonalizedPlanesRepository
 from fastapi import HTTPException
@@ -16,7 +17,9 @@ class PersonalizedPlanesService:
     
     def get_planes_by_user_id(self, user_id: int) -> list[PersonalizedPlanList]:
         planes = self.planes_repository.get_planes_by_user_id(user_id)
-        return planes
+        if len(planes) > COUNT_ELEMENTS_ZERO:
+            return planes
+        return None
         
 
 

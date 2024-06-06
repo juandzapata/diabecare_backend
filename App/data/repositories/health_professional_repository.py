@@ -6,7 +6,9 @@ from data.models.base import ProfesionalPaciente, ProfesionalSalud, Usuario
 class HealthProfessionalRepository:
     def  __init__(self, db):
         self.db = db
-        
+    
+    ##No incluir validaciones en el repositorio
+    ##Debe retornar todo el profesional, no solo el id
     def get_professional_id_by_user_id(self,usuario_id: int) -> int | None:
         result = self.db.query(ProfesionalSalud).filter(ProfesionalSalud.usuarioId == usuario_id).first()
         if result:
@@ -18,6 +20,7 @@ class HealthProfessionalRepository:
         user_professional = db.query(Usuario).filter(Usuario.usuarioId == professional.usuarioId).first()
         return user_professional
     
+    ##No va aqui 
     def create_recommendations_for_plan (self, plan: PersonalizedPlanCreate, planId: int) -> None:
         for i in range(len(plan.recomendaciones)):
             plan.recomendaciones[i].planId = planId

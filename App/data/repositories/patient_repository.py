@@ -29,7 +29,7 @@ class PatientRepository:
             ano_actual = date.today().year
             edad = ano_actual - row.fechaNacimiento.year
             
-            #Mapear
+            #Mapear> enviar row y debe devolver un PacientList
             paciente = PacientList(
                 patient_id=row.pacienteId,
                 name=row.nombre,
@@ -64,7 +64,7 @@ class PatientRepository:
     
     def get_patient_id_by_user_id(self, user_id: int) -> int:
         patient = self.db.query(Paciente).filter(Paciente.usuarioId == user_id).first()
-        if patient.pacienteId != NOT_ID:
+        if patient:
             return patient.pacienteId
         return None
     
