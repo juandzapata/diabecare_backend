@@ -15,11 +15,13 @@ router = APIRouter()
 
 @router.post("/create_patient_histories/", response_model=PatientHistoryRead, summary="Create patient history")
 async def create_patient_history(history_create: PatientHistoryCreate, db: Session = Depends(get_db)):
-    service = PatientService(db)
-    patient_history = service.create_history(history_create)
-    if patient_history is not None:
-        return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data": jsonable_encoder(patient_history)})
-    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "No se pudo crear el historial."})
+    try:
+        service = PatientService(db)
+        patient_history = service.create_history(history_create)
+        return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data": jsonable_encoder(patient_history),"statusCode": status.HTTP_201_CREATED, "message": "Historial creado."})
+    except Exception as e:
+     print("Error creating patient history: ", e)
+     return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"statusCode": status.HTTP_500_INTERNAL_SERVER_ERROR, "data":None, "message": "No se pudo crear el historial."})
 
 @router.get("/patients_by_health_professional/{user_id}", response_model=list[PacientList], summary="Get patients by user id of a professional")
 async def get_patients_by_professional(user_id: int, db: Session = Depends(get_db)):
