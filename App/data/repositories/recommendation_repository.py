@@ -6,7 +6,7 @@ class RecommendationRepository:
     def __init__(self, db):
         self.db = db
         
-    def post_recomendation (self, recommendation: RecommendationCreate) -> RecommendationOut:
+    def post_recommendation (self, recommendation: RecommendationCreate) -> RecommendationOut:
         db_recommendation: Recomendacion = Recomendacion(**recommendation.model_dump())
         self.db.add(db_recommendation)
         self.db.commit()

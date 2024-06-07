@@ -3,12 +3,12 @@ from typing import Optional
 from pydantic.types import Decimal
 from pydantic import BaseModel, validator
 
-class PacientList(BaseModel):
+class PatientList(BaseModel):
     patient_id: int
     name: str
     last_name: str
     date: datetime
-    age: int
+    age: Optional[int]
     glucose_level: Decimal
     physical_activity_hours: Decimal
     last_medication: str

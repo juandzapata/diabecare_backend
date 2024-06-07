@@ -1,3 +1,4 @@
+from exceptions.not_exists import NotExistsException
 from utils.constants  import messages
 from utils.constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage
@@ -17,9 +18,12 @@ class NotificationService:
         user_patient_id = user_patient[FIRST_ELEMENT_INDEX]
         plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
         device_id = self.db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
-        user_professional = health_professional.get_user_professional_by_id(plan.profesionalSaludId, self.db)
-        message = self.create_message(user_patient, user_professional, plan_id , device_id)
-        return self.send_notification_user(message)
+        try:
+            user_professional = health_professional.get_user_professional_by_id(plan.profesionalSaludId, self.db)
+            message = self.create_message(user_patient, user_professional, plan_id , device_id)
+            return self.send_notification_user(message)
+        except NotExistsException as e:
+            return {"error": str(e.get_message())}
 
     def create_message(self, patient: Usuario, professional: Usuario, plan_id: int, device_id: str) -> NotificationMessage:
         INCREMENT = 1

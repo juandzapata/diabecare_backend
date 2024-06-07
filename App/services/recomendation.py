@@ -1,3 +1,4 @@
+from exceptions.not_created import NotCreatedException
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO, NOT_ID
 from data.repositories.recommendation_repository import RecommendationRepository
 from schemas.recommendation import RecommendationCreate, RecommendationOut
@@ -7,14 +8,12 @@ class RecommendationService:
     def __init__(self, db):
         self.recommendation_repository = RecommendationRepository(db)
         
-    def post_recommendation (self, recommendation: RecommendationCreate) -> RecommendationOut:
+    def post_recommendation (self, recommendation: RecommendationCreate) -> RecommendationOut | NotCreatedException:
         recommendation = self.recommendation_repository.post_recommendation(recommendation)
-        if recommendation != NOT_ID:
+        if recommendation:
             return recommendation
-        return None
+        raise NotCreatedException("La recomendación no pudo ser creada")
 
     def get_recommendations_by_plan_id(self, plan_id: int) -> list[Recomendacion] | None:
         recommendations = self.recommendation_repository.get_recomendations_by_plan_id(plan_id)
-        if len(recommendations) > COUNT_ELEMENTS_ZERO:
-            return recommendations
-        return None
+        return recommendations

@@ -1,10 +1,12 @@
 from datetime import date
+from data.models.base import Usuario
+from exceptions.not_exists import NotExistsException
 from services.pdf import PdfService
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from data.database.db import get_db
-from schemas.patient import PacientList, PatientHistoryCreate, PatientHistoryRead, PatientPlan
+from schemas.patient import PatientList, PatientHistoryCreate, PatientHistoryRead, PatientPlan
 from services.health_professional import HealthProfessionalService
 from services.patient import PatientService
 from sqlalchemy.orm import Session
@@ -19,28 +21,35 @@ async def create_patient_history(history_create: PatientHistoryCreate, db: Sessi
         service = PatientService(db)
         patient_history = service.create_history(history_create)
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data": jsonable_encoder(patient_history),"statusCode": status.HTTP_201_CREATED, "message": "Historial creado."})
-    except Exception as e:
-     print("Error creating patient history: ", e)
-     return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"statusCode": status.HTTP_500_INTERNAL_SERVER_ERROR, "data":None, "message": "No se pudo crear el historial."})
+    except NotExistsException as e:
+     print("Error creating patient history: ", e.get_message())
+     return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"statusCode": status.HTTP_500_INTERNAL_SERVER_ERROR, "data":None, "message": e.get_message()})
 
-@router.get("/patients_by_health_professional/{user_id}", response_model=list[PacientList], summary="Get patients by user id of a professional")
+@router.get("/patients_by_health_professional/{user_id}", response_model=list[PatientList], summary="Get patients by user id of a professional")
 async def get_patients_by_professional(user_id: int, db: Session = Depends(get_db)):
     patient_service = PatientService(db)
     professional_service = HealthProfessionalService(db)
-    professional_id = professional_service.get_professional_id_by_user_id(user_id)
-    patients = patient_service.get_info_patients_by_professional_id(professional_id)
-    if len(patients) == COUNT_ELEMENTS_ZERO:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Este profesional no tiene pacientes asignados."})
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patients)})
-
+    
+    try:
+        professional = professional_service.get_professional_by_user_id(user_id)
+        professional_id = professional.profesionalSaludId
+        patients = patient_service.get_info_patients_by_professional_id(professional_id)
+        if len(patients) > COUNT_ELEMENTS_ZERO:
+            return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patients)})
+        else:
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "No se encontraron pacientes asignados al profesional"})
+    except (NotExistsException) as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": e.get_message()})
+    
 @router.get("/patient_by_id/{id}", response_model=PatientPlan, summary="Get patient by patient id")
 async def get_patient_by_id(id: int, db: Session = Depends(get_db)):
     service = PatientService(db)
-    patient = service.get_patient(id)
-    if patient is None:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "No se encontró el paciente."})
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(patient)})
-
+    try:
+        user_patient = service.get_user_patient_by_id(id)
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"data": jsonable_encoder(user_patient)})
+    except NotExistsException as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": e.get_message()})
+   
 @router.get("/generate_report/{patient_id}", summary="Generate report", response_class=Response)
 async def generate_pdf(patient_id: int, db: Session = Depends(get_db)):
     service = PatientService(db)
