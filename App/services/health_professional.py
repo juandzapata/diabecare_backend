@@ -1,12 +1,7 @@
 from exceptions.not_exists import NotExistsException
 from data.repositories.health_professional_repository import HealthProfessionalRepository
-from services.patient import PatientService
 from sqlalchemy import text
 from data.models.base import ProfesionalPaciente, ProfesionalSalud, Usuario
-from schemas.patient import PatientList
-from sqlalchemy.orm import Session
-from utils.constants.default_values import NOT_ID, COUNT_ELEMENTS_ZERO
-
 class HealthProfessionalService:
     def __init__(self, db):
         self.professional_repository = HealthProfessionalRepository(db)
@@ -17,7 +12,7 @@ class HealthProfessionalService:
             return professional
         raise NotExistsException(f"No existe un profesional de salud con el id de usuario {usuario_id}")
     
-    def get_user_professional_by_id(self, professional_id) -> Usuario | NotExistsException:
+    def get_user_professional_by_id(self, professional_id: int) -> Usuario | NotExistsException:
         user_professional = self.professional_repository.get_user_by_professional_id(professional_id)
         if user_professional:
             return user_professional

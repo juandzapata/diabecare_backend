@@ -1,4 +1,5 @@
 from datetime import date
+from schemas.pdf import DataReportCreate
 from data.models.base import Usuario
 from exceptions.not_exists import NotExistsException
 from services.pdf import PdfService
@@ -50,18 +51,20 @@ async def get_patient_by_id(id: int, db: Session = Depends(get_db)):
     except NotExistsException as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": e.get_message()})
    
-@router.get("/generate_report/{patient_id}", summary="Generate report", response_class=Response)
-async def generate_pdf(patient_id: int, db: Session = Depends(get_db)):
+@router.get("/generate_report/{patient_id}/{professional_user_id}", summary="Generate report", response_class=Response)
+async def generate_pdf(patient_id: int, professional_user_id: int, db: Session = Depends(get_db)):
+    data_report = DataReportCreate(patient_id=patient_id, professional_user_id=professional_user_id)
     service = PatientService(db)
-    patient = service.get_data_report(patient_id)
-    if patient is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se encontró el paciente.")
+    try:
+        patient_data = service.get_data_for_pdf(data_report)
+    except NotExistsException as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": e.get_message()})   
     
     service_pdf = PdfService()
-    pdf_buffer = service_pdf.generate_pdf(patient)
+    pdf_buffer = service_pdf.generate_pdf(patient_data)
     date_created_str = date.today().strftime("%d-%m-%Y")
     headers = {
-        "Content-Disposition": f"attachment; filename={'Reporte-' + patient.full_name + '-' + date_created_str}.pdf"
+        "Content-Disposition": f"attachment; filename={'Reporte-' + patient_data.full_name + '-' + date_created_str}.pdf"
     }
     
     return Response(pdf_buffer.read(), media_type='application/pdf', headers=headers)

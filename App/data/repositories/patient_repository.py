@@ -40,6 +40,10 @@ class PatientRepository:
         patient = self.db.query(Paciente).filter(Paciente.usuarioId == user_id).first()
         return patient
     
+    def get_patient_by_id(self, patient_id: int) -> Paciente:
+        patient = self.db.query(Paciente).filter(Paciente.pacienteId == patient_id).first()
+        return patient
+    
     def get_data_report(self, patient_id: int) -> PatientDataReport:
         query = text(QUERY_GET_DATA_REPORT)
         data_patient = self.db.execute(query, {"patient_id": patient_id}).fetchone()

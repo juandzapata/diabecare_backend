@@ -15,6 +15,8 @@ class PatientDataReportMapper:
             average_glucose_level=patient.avg_nivelGlucosa,
             average_physical_activity_hours=patient.avg_horasActividadFisica,
             most_consumed_medication=patient.medicamento_mas_consumido,
-            most_consumed_food=patient.comida_mas_consumida
+            most_consumed_food=patient.comida_mas_consumida,
+            full_name_professional=None,
+            email_professional=None
         )
     
