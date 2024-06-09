@@ -1,4 +1,4 @@
-from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String, Time
+from sqlalchemy import DECIMAL, Column, Date, DateTime, ForeignKey, Integer, String, Time, inspect
 from data.database.db import Base
 from sqlalchemy.orm import relationship
     

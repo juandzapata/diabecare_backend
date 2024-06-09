@@ -1,19 +1,24 @@
 from datetime import datetime
 from typing import Optional
-from pydantic.types import Decimal
+from decimal import Decimal
 from pydantic import BaseModel, validator
 
-class PacientList(BaseModel):
+class PatientList(BaseModel):
     patient_id: int
     name: str
     last_name: str
     date: datetime
-    age: int
+    age: Optional[int]
     glucose_level: Decimal
     physical_activity_hours: Decimal
     last_medication: str
     last_meal: str
     photo: str
+    
+    class Config:
+        json_encoders = {
+            Decimal: lambda v: float(v),
+        }
 
 class PatientPlan(BaseModel):
     patient_id: int
@@ -56,3 +61,5 @@ class PatientDataReport(BaseModel):
     average_physical_activity_hours: Decimal
     most_consumed_medication: str
     most_consumed_food: str
+    full_name_professional: Optional[str]
+    email_professional: Optional[str]
