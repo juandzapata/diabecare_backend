@@ -43,7 +43,7 @@ class PersonalizedPlanesRepository:
         patient_id = patient_repository.get_patient_id_by_user_id(user_id)
         
         if patient_id is None:
-            return None
+            return []
         
         query = text(QUERY_GET_PLANES_BY_PATIENT_ID)
         result = self.db.execute(query, {"patient_id": patient_id}).fetchall()
