@@ -38,11 +38,12 @@ class PatientServiceTest(unittest.TestCase):
     def test_create_incorrect_history(self):
         with self.assertRaises(ValidationError):
             history_create = PatientHistoryCreate(
-                pacienteId=7,
-                nivelGlucosa="abc",
-                horasActividadFisica=27,
-                medicamento="TEST",
-                comida="TEST"
+                user_patient_id=7,
+                patient_id=None,
+                glucose_level="abc",
+                hours_physical_activity=27,
+                medication="TEST",
+                food="TEST"
             )
             self.patient_service.create_history(history_create)
 
