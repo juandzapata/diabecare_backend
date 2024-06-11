@@ -1,10 +1,9 @@
 from datetime import datetime
 import unittest
-
-
 from pydantic import ValidationError
 from requests import Session
-
+from schemas.pdf import DataReportCreate
+from exceptions.not_exists import NotExistsException
 from data.database.db import SessionLocal
 from schemas.patient import PatientHistoryCreate
 from services.patient import PatientService
@@ -46,6 +45,12 @@ class PatientServiceTest(unittest.TestCase):
             )
             self.patient_service.create_history(history_create)
 
+    def test_generate_pdf_patient_not_assigned(self):
+        with self.assertRaises(NotExistsException) as context:
+            data_report = DataReportCreate(patient_id=6, professional_user_id=13)
+            self.patient_service.generate_pdf(data_report)
+            
+            self.assertEquals(context.exception.get_message(), "No existe una relación entre el paciente con id 6 y el profesional de salud con id 11")
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,7 @@ from schemas.pdf import DataReportCreate
 from data.models.base import Usuario
 from exceptions.not_exists import NotExistsException
 from services.pdf import PdfService
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from data.database.db import get_db
@@ -56,15 +56,13 @@ async def generate_pdf(patient_id: int, professional_user_id: int, db: Session =
     data_report = DataReportCreate(patient_id=patient_id, professional_user_id=professional_user_id)
     service = PatientService(db)
     try:
-        patient_data = service.get_data_for_pdf(data_report)
+        pdf_buffer = service.generate_pdf(data_report)
     except NotExistsException as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": e.get_message()})   
     
-    service_pdf = PdfService()
-    pdf_buffer = service_pdf.generate_pdf(patient_data)
     date_created_str = date.today().strftime("%d-%m-%Y")
     headers = {
-        "Content-Disposition": f"attachment; filename={'Reporte-' + patient_data.full_name + '-' + date_created_str}.pdf"
+        "Content-Disposition": f"attachment; filename={'Reporte' + '-' + date_created_str}.pdf"
     }
     
     return Response(pdf_buffer.read(), media_type='application/pdf', headers=headers)
