@@ -35,6 +35,7 @@ QUERY_GET_PLANES_BY_PATIENT_ID = """SELECT P.planId, P.fechaCreacion, CONCAT(U.n
                                         INNER JOIN Usuario U
                                         on U.usuarioid = PS.usuarioid
                                         WHERE PP.pacienteId = :patient_id
+                                        ORDER BY P.fechaCreacion DESC
                                 """ 
                                 
 QUERY_GET_DATA_REPORT="""SELECT
