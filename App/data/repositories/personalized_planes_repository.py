@@ -30,7 +30,6 @@ class PersonalizedPlanesRepository:
     def get_planes_by_patient_id(self, patient_id: int) -> list[PersonalizedPlanList]:   
         query = text(QUERY_GET_PLANES_BY_PATIENT_ID)
         planes = self.db.execute(query, {"patient_id": patient_id}).fetchall()
-        
         planes_list: list[PersonalizedPlanList] = []
         for plan in planes:
             plan = PersonalizedPlanMapper.to_plan_list_model(plan)

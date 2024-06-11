@@ -17,20 +17,21 @@ class PatientServiceTest(unittest.TestCase):
     def test_create_history(self):
 
         history_create = PatientHistoryCreate(
-                pacienteId=7,
-                nivelGlucosa=20,
-                horasActividadFisica=27,
-                medicamento="TEST",
-                comida="TEST"
+                user_patient_id=7,
+                patient_id=None,
+                glucose_level=20,
+                hours_physical_activity=27,
+                medication="TEST",
+                food="TEST"
             )
 
         result = self.patient_service.create_history(history_create)
 
-        self.assertEqual(result.pacienteId, history_create.pacienteId)
-        self.assertEqual(result.nivelGlucosa, history_create.nivelGlucosa)
-        self.assertEqual(result.horasActividadFisica, history_create.horasActividadFisica)
-        self.assertEqual(result.medicamento, history_create.medicamento)
-        self.assertEqual(result.comida, history_create.comida)
+        self.assertEqual(result.pacienteId, history_create.patient_id)
+        self.assertEqual(result.nivelGlucosa, history_create.glucose_level)
+        self.assertEqual(result.horasActividadFisica, history_create.hours_physical_activity)
+        self.assertEqual(result.medicamento, history_create.medication)
+        self.assertEqual(result.comida, history_create.food)
         self.assertIsNotNone(result.fecha)
         self.assertIsInstance(result.fecha, datetime)
     
