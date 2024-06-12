@@ -1,14 +1,9 @@
 from datetime import date
 from sqlalchemy import text
-from App.services.notification import NotificationService
 from utils.mappers.plan_list_mapper import PersonalizedPlanMapper
-from exceptions.not_exists import NotExistsException
-from data.repositories.patient_repository import PatientRepository
 from utils.constants.query import QUERY_GET_PLANES_BY_PATIENT_ID
-from data.repositories.recommendation_repository import RecommendationRepository
-from data.repositories.health_professional_repository import HealthProfessionalRepository
 from data.models.base import PlanesPersonalizados
-from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanList, PersonalizedPlanOut
+from schemas.personalized_planes import PersonalizedPlanList
 
 
 class PersonalizedPlanesRepository:

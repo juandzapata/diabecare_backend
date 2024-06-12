@@ -4,8 +4,9 @@ from utils.constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, TokenDeviceOut
-from services import recomendation as recomendationService
-from services import patient, health_professional
+from services.recomendation import RecommendationService
+from services.health_professional import HealthProfessionalService
+from services.patient import PatientService
 from data.models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
 from services.utils import convert_time_to_12_hour_format
@@ -13,13 +14,17 @@ from services.utils import convert_time_to_12_hour_format
 class NotificationService:
     def __init__(self, db):
         self.db = db
+        self.patient_service = PatientService(self.db)
+        self.health_service = HealthProfessionalService(self.db)
+        self.recommendation_service = RecommendationService(self.db)
+
     def send_notification (self, plan: PersonalizedPlanCreate):
-        user_patient = patient.get_user_patient_by_id(plan.pacienteId, self.db)
-        user_patient_id = user_patient[FIRST_ELEMENT_INDEX]
+        user_patient = self.patient_service.get_user_patient_by_id(plan.pacienteId)
+        user_patient_id = user_patient.usuarioId
         plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
         device_id = self.db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
         try:
-            user_professional = health_professional.get_user_professional_by_id(plan.profesionalSaludId, self.db)
+            user_professional = self.health_service.get_user_professional_by_id(plan.profesionalSaludId)
             message = self.create_message(user_patient, user_professional, plan_id , device_id)
             return self.send_notification_user(message)
         except NotExistsException as e:
@@ -27,7 +32,7 @@ class NotificationService:
 
     def create_message(self, patient: Usuario, professional: Usuario, plan_id: int, device_id: str) -> NotificationMessage:
         INCREMENT = 1
-        recommendations = recomendationService.get_recommendations_by_plan_id(plan_id, self.db)
+        recommendations = self.recommendation_service.get_recommendations_by_plan_id(plan_id)
         hora = convert_time_to_12_hour_format(recommendations[FIRST_ELEMENT_INDEX].horaEjecucion)
         print("Horaaaa", hora)
         message = f"Hola {patient.nombre}!. El Dr. {professional.nombre} te creo un nuevo plan con las siguientes recomendaciones: \n"
