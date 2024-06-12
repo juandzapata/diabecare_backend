@@ -1,3 +1,4 @@
+from App.services.notification import NotificationService
 from services.health_professional import HealthProfessionalService
 from exceptions.not_exists import NotExistsException
 from services.recomendation import RecommendationService
@@ -14,6 +15,7 @@ from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlan
 class PersonalizedPlanesService:
     def __init__(self, db):
         self.planes_repository = PersonalizedPlanesRepository(db)
+        self. notification_service = NotificationService(db)
         self.db = db
         
     def post_personalized_plan (self, plan: PersonalizedPlanCreate) -> PlanesPersonalizados | NotCreatedException:
@@ -22,6 +24,7 @@ class PersonalizedPlanesService:
         plan_created = self.planes_repository.post_personalized_plan(plan, professional_patient.profesionalPacienteId)
         if plan_created:
             self.create_recommendations_for_plan(plan, plan_created.planId)
+            self.notification_service.send_notification(plan, self.db)
             return plan_created
         raise NotCreatedException("El plan no pudo ser creado.")
     

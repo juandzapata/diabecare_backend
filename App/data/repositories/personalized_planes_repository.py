@@ -1,5 +1,6 @@
 from datetime import date
 from sqlalchemy import text
+from App.services.notification import NotificationService
 from utils.mappers.plan_list_mapper import PersonalizedPlanMapper
 from exceptions.not_exists import NotExistsException
 from data.repositories.patient_repository import PatientRepository
@@ -13,7 +14,7 @@ from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlan
 class PersonalizedPlanesRepository:
     def __init__(self, db):
         self.db = db
-        
+  
     def post_personalized_plan (self, professional_patient_id: int) -> PlanesPersonalizados:
         db_plan: PlanesPersonalizados = PlanesPersonalizados(
             profesionalPacienteId = professional_patient_id,
@@ -23,8 +24,7 @@ class PersonalizedPlanesRepository:
         self.db.add(db_plan)
         self.db.commit()
         self.db.refresh(db_plan)
-        
-        #notification.send_notification(plan, self.db)
+       
         return db_plan
             
     def get_planes_by_patient_id(self, patient_id: int) -> list[PersonalizedPlanList]:   
