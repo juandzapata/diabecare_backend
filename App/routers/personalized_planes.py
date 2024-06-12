@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from data.database.db import get_db
-from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanOut
+from schemas.personalized_planes import PersonalizedPlanCreate
 from sqlalchemy.orm import Session
 from services.personalized_planes import PersonalizedPlanesService
 
@@ -16,6 +16,7 @@ async def create_plan_personalizado(plan: PersonalizedPlanCreate, db: Session = 
     
     try:
         plan_created = service.post_personalized_plan(plan)
+        print("plan_created", plan_created)
         return JSONResponse(status_code = status.HTTP_200_OK, content = {'data': jsonable_encoder(plan_created)})
     except NotExistsException as e:
         return JSONResponse(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR, content = {'message': e.get_message()})

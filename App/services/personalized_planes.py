@@ -18,14 +18,14 @@ class PersonalizedPlanesService:
         self. notification_service = NotificationService(db)
         self.db = db
         
-    def post_personalized_plan (self, plan: PersonalizedPlanCreate) -> PlanesPersonalizados | NotCreatedException:
+    def post_personalized_plan (self, plan: PersonalizedPlanCreate) -> PersonalizedPlanOut | NotCreatedException:
         professional_repository = HealthProfessionalService(self.db)
         professional_patient = professional_repository.get_professional_patient(plan.pacienteId, plan.profesionalSaludId)
         plan_created = self.planes_repository.post_personalized_plan(professional_patient.profesionalPacienteId)
         if plan_created:
             self.create_recommendations_for_plan(plan, plan_created.planId)
             self.notification_service.send_notification(plan)
-            return plan_created
+            return PersonalizedPlanOut.model_validate(plan_created)
         raise NotCreatedException("El plan no pudo ser creado.")
     
     def get_planes_by_user_id(self, user_id: int) -> list[PersonalizedPlanList] | NotExistsException:

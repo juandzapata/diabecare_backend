@@ -23,7 +23,6 @@ async def create_patient_history(history_create: PatientHistoryCreate, db: Sessi
         patient_history = service.create_history(history_create)
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={"data": jsonable_encoder(patient_history),"statusCode": status.HTTP_201_CREATED, "message": "Historial creado."})
     except NotExistsException as e:
-     print("Error creating patient history: ", e.get_message())
      return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"statusCode": status.HTTP_500_INTERNAL_SERVER_ERROR, "data":None, "message": e.get_message()})
 
 @router.get("/patients_by_health_professional/{user_id}", response_model=list[PatientList], summary="Get patients by user id of a professional")
