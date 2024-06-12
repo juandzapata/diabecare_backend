@@ -1,3 +1,5 @@
+from datetime import date
+from services.pdf import PdfService
 from services.health_professional import HealthProfessionalService
 from schemas.pdf import DataReportCreate
 from exceptions.not_exists import NotExistsException
@@ -13,6 +15,12 @@ class PatientService:
         self.patient_repository = PatientRepository(db)
         self.db = db
 
+    def generate_pdf(self, data_report: DataReportCreate):
+        patient_data = self.get_data_for_pdf(data_report)
+        service_pdf = PdfService()
+        pdf_buffer = service_pdf.generate_pdf(patient_data)
+        return pdf_buffer
+        
     def create_history(self, history_create: PatientHistoryCreate) -> PatientHistoryRead:
         patient = self.get_patient_by_user_id(history_create.user_patient_id)
         history_create.patient_id = patient.pacienteId
