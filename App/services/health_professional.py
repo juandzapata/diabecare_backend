@@ -18,8 +18,8 @@ class HealthProfessionalService:
             return user_professional
         raise NotExistsException(f"No existe un usuario asociado al profesional de salud con id {professional_id}")
 
-    def get_professional_patient(self, pacienteId: int, profesionalSaludId: int) -> ProfesionalPaciente | NotExistsException:
-        professional_patient = self.professional_repository.get_professional_patient(pacienteId, profesionalSaludId)
+    def get_professional_patient(self, patient_id: int, health_professional_id: int) -> ProfesionalPaciente | NotExistsException:
+        professional_patient = self.professional_repository.get_professional_patient(patient_id, health_professional_id)
         if professional_patient:
             return professional_patient
-        raise NotExistsException(f"No existe una relación entre el paciente con id {pacienteId} y el profesional de salud con id {profesionalSaludId}")
+        raise NotExistsException(f"No existe una relación entre el paciente con id {patient_id} y el profesional de salud con id {health_professional_id}")

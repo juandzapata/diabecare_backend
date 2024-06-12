@@ -18,8 +18,8 @@ class PersonalizedPlanesService:
         
     def post_personalized_plan (self, plan: PersonalizedPlanCreate) -> PlanesPersonalizados | NotCreatedException:
         professional_repository = HealthProfessionalService(self.db)
-        profesionalPaciente = professional_repository.get_professional_patient(plan.pacienteId, plan.profesionalSaludId)
-        plan_created = self.planes_repository.post_personalized_plan(plan, profesionalPaciente.profesionalPacienteId)
+        professional_patient = professional_repository.get_professional_patient(plan.pacienteId, plan.profesionalSaludId)
+        plan_created = self.planes_repository.post_personalized_plan(plan, professional_patient.profesionalPacienteId)
         if plan_created:
             self.create_recommendations_for_plan(plan, plan_created.planId)
             return plan_created
@@ -32,10 +32,10 @@ class PersonalizedPlanesService:
         planes = self.planes_repository.get_planes_by_patient_id(patient_id)
         return planes
         
-    def create_recommendations_for_plan (self, plan: PersonalizedPlanCreate, planId: int):
+    def create_recommendations_for_plan (self, plan: PersonalizedPlanCreate, plan_id: int):
         recommendation_service = RecommendationService(self.db)
         for i in range(len(plan.recomendaciones)):
-            plan.recomendaciones[i].planId = planId
+            plan.recomendaciones[i].planId = plan_id
             recommendation_service.post_recommendation(plan.recomendaciones[i])
 
 

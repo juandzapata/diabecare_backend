@@ -14,9 +14,9 @@ class PersonalizedPlanesRepository:
     def __init__(self, db):
         self.db = db
         
-    def post_personalized_plan (self, plan: PersonalizedPlanCreate, profesionalPacienteId: int) -> PlanesPersonalizados:
+    def post_personalized_plan (self, professional_patient_id: int) -> PlanesPersonalizados:
         db_plan: PlanesPersonalizados = PlanesPersonalizados(
-            profesionalPacienteId = profesionalPacienteId,
+            profesionalPacienteId = professional_patient_id,
             fechaCreacion = date.today()
         )
 

@@ -17,5 +17,5 @@ class HealthProfessionalRepository:
         user_professional = self.db.query(Usuario).filter(Usuario.usuarioId == professional.usuarioId).first()
         return user_professional
     
-    def get_professional_patient (self, pacienteId: int, profesionalSaludId: int) -> ProfesionalPaciente:
-        return self.db.query(ProfesionalPaciente).filter(ProfesionalPaciente.pacienteId == pacienteId, ProfesionalPaciente.profesionalId == profesionalSaludId).first()
+    def get_professional_patient (self, paciente_id: int, health_professional_id: int) -> ProfesionalPaciente:
+        return self.db.query(ProfesionalPaciente).filter(ProfesionalPaciente.pacienteId == paciente_id, ProfesionalPaciente.profesionalId == health_professional_id).first()
