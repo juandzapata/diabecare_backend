@@ -7,6 +7,10 @@ from schemas.personalized_planes import PersonalizedPlanList
 
 
 class PersonalizedPlanesRepository:
+    """
+    Repository class for managing personalized plans.
+    """
+
     def __init__(self, db):
         self.db = db
   

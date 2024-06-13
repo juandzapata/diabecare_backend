@@ -4,10 +4,14 @@ from data.models.base import ProfesionalPaciente, ProfesionalSalud, Usuario
 
 
 class HealthProfessionalRepository:
-    def  __init__(self, db):
+    """
+    Repository class for managing health professionals in the system.
+    """
+
+    def __init__(self, db):
         self.db = db
     
-    def get_professional_by_user_id(self,usuario_id: int) -> ProfesionalSalud | None:
+    def get_professional_by_user_id(self, usuario_id: int) -> ProfesionalSalud | None:
         result = self.db.query(ProfesionalSalud).filter(ProfesionalSalud.usuarioId == usuario_id).first()
         return result
     

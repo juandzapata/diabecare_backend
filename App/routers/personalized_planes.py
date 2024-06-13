@@ -1,7 +1,7 @@
 
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from data.database.db import get_db

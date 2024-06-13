@@ -1,4 +1,4 @@
-from exceptions.not_created import NotCreatedException
+from utils.exceptions.not_created import NotCreatedException
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
