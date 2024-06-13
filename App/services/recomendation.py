@@ -34,7 +34,7 @@ class RecommendationService:
                 plan_id (int): The ID of the plan.
 
             Returns:
-                list[Recomendacion] | None: A list of recommendations or None if no recommendations are found.
+                list[Recommendation] | None: A list of recommendations or None if no recommendations are found.
             """
             recommendations = self.recommendation_repository.get_recomendations_by_plan_id(plan_id)
             return recommendations

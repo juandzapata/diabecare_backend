@@ -19,8 +19,12 @@ class PersonalizedPlanOut(BaseModel):
 
 
     
-class PersonalizedPlanList(PersonalizedPlanOut):
+class PersonalizedPlanList(BaseModel):
+    plan_Id: int
     creation_date: date
     full_name_professional: str
+    class Config:
+        orm_mode = True
+        from_attributes = True
     
     
