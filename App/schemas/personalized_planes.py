@@ -6,10 +6,18 @@ from schemas.recommendation import RecommendationCreate
 class PersonalizedPlanCreate(BaseModel):
     pacienteId: int
     profesionalSaludId: int
-    recomendaciones: List[RecommendationCreate]
+    recomendaciones: List[RecommendationCreate] 
 
 class PersonalizedPlanOut(BaseModel):
     planId: int
+    profesionalPacienteId: int
+    fechaCreacion: date
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
+
     
 class PersonalizedPlanList(PersonalizedPlanOut):
     creation_date: date

@@ -41,6 +41,7 @@ class PatientHistoryRead(BaseModel):
     medicamento: str
     comida: str
 
+    
     @validator('fecha', pre=True, always=True)
     def date_of_diagnosis_to_str(cls, v):
         if isinstance(v, datetime):
