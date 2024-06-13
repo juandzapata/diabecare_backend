@@ -1,4 +1,5 @@
-from data.models.base import Usuario
+from schemas.notification import TokenDeviceOut
+from data.models.base import TokenUsuario, Usuario
 from schemas.user import GetUser
 from utils.constants.default_values import NOT_ID
 
@@ -24,3 +25,10 @@ class UserMapper:
         return user_login
         
 
+    @staticmethod
+    def to_user_token_out(token: TokenUsuario) -> TokenDeviceOut:
+       return TokenDeviceOut(
+            usuarioId=token.usuarioId,
+            tokenDispositivo=token.tokenDispositivo,
+            tokenUsuarioId=token.tokenUsuarioId
+        )

@@ -1,3 +1,5 @@
+from utils.mappers.user_mapper import UserMapper
+from data.repositories.user_repository import UserRepository
 from utils.exceptions.not_exists import NotExistsException
 from utils.constants  import messages
 from utils.constants.default_values import FIRST_ELEMENT_INDEX
@@ -10,13 +12,14 @@ from services.patient import PatientService
 from data.models.base import TokenUsuario, Usuario
 from schemas.personalized_planes import PersonalizedPlanCreate
 from services.utils import convert_time_to_12_hour_format
-
 class NotificationService:
+
     def __init__(self, db):
         self.db = db
         self.patient_service = PatientService(self.db)
         self.health_service = HealthProfessionalService(self.db)
         self.recommendation_service = RecommendationService(self.db)
+        self.user_repository = UserRepository(self.db)
 
     def send_notification(self, plan: PersonalizedPlanCreate):
         """
@@ -97,8 +100,8 @@ class NotificationService:
             return {"error": str(ex)}
 
 
-    def post_token(self, token: tokenCreate, database) -> TokenDeviceOut:
-        existing_token = database.query(TokenUsuario).filter_by(usuarioId=token.userId).first()
+    def post_token(self, token: tokenCreate) -> TokenDeviceOut:
+        existing_token = self.user_repository.get_toke_user_by_user_id(token.userId)
 
         if existing_token:
             existing_token.tokenDispositivo = token.token
@@ -108,16 +111,12 @@ class NotificationService:
                 tokenDispositivo=token.token,
                 usuarioId=token.userId
             )
-            database.add(db_token)
+            db_token = self.user_repository.create_token_user(db_token)
         
-        database.commit()
-        database.refresh(db_token)
+        self.db.commit()
+        self.db.refresh(db_token)
         
-        token_device_out = TokenDeviceOut(
-            usuarioId=db_token.usuarioId,
-            tokenDispositivo=db_token.tokenDispositivo,
-            tokenUsuarioId=db_token.tokenUsuarioId
-        )
+        token_device_out = UserMapper.to_user_token_out(db_token)
         
         return token_device_out
 

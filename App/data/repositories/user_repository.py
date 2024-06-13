@@ -1,4 +1,4 @@
-from data.models.base import Usuario
+from data.models.base import TokenUsuario, Usuario
 
 
 class UserRepository:
@@ -23,3 +23,11 @@ class UserRepository:
         self.db.refresh(user)
         return user
     
+    def get_toke_user_by_user_id(self, user_id):
+        return self.db.query(TokenUsuario).filter_by(usuarioId = user_id).first()
+    
+    def create_token_user(self, token: TokenUsuario) -> TokenUsuario:
+        self.db.add(token)
+        self.db.commit()
+        self.db.refresh(token)
+        return token

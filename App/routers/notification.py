@@ -20,7 +20,7 @@ async def send_notification(message: NotificationMessage, db: Session = Depends(
 @router.post("/save_token", summary="save token for notifications")
 async def create_token(token: tokenCreate, db: Session = Depends(get_db)):
     service = NotificationService(db)
-    token_create = service.post_token(token, db)
+    token_create = service.post_token(token)
     if token_create is None:
         raise HTTPException(
             status_code = status.HTTP_409_CONFLICT,
