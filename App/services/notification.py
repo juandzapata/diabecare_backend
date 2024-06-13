@@ -18,19 +18,42 @@ class NotificationService:
         self.health_service = HealthProfessionalService(self.db)
         self.recommendation_service = RecommendationService(self.db)
 
-    def send_notification (self, plan: PersonalizedPlanCreate):
+    def send_notification(self, plan: PersonalizedPlanCreate):
+        """
+        Sends a notification to the user associated with the given plan.
+
+        Args:
+            plan (PersonalizedPlanCreate): The personalized plan object.
+
+        Returns:
+            dict: A dictionary containing the result of the notification sending process.
+                If successful, the dictionary will contain the notification details.
+                If an error occurs, the dictionary will contain an "error" key with the error message.
+        """
         user_patient = self.patient_service.get_user_patient_by_id(plan.pacienteId)
         user_patient_id = user_patient.usuarioId
         plan_id = plan.recomendaciones[FIRST_ELEMENT_INDEX].planId
         device_id = self.db.query(TokenUsuario).filter(TokenUsuario.usuarioId == user_patient_id).first().tokenDispositivo
         try:
             user_professional = self.health_service.get_user_professional_by_id(plan.profesionalSaludId)
-            message = self.create_message(user_patient, user_professional, plan_id , device_id)
+            message = self.create_message(user_patient, user_professional, plan_id, device_id)
             return self.send_notification_user(message)
         except NotExistsException as e:
             return {"error": str(e.get_message())}
 
     def create_message(self, patient: Usuario, professional: Usuario, plan_id: int, device_id: str) -> NotificationMessage:
+        """
+        Creates a notification message for a patient based on a plan.
+
+        Args:
+            patient (Usuario): The patient for whom the message is created.
+            professional (Usuario): The professional who created the plan.
+            plan_id (int): The ID of the plan.
+            device_id (str): The device ID to which the message will be sent.
+
+        Returns:
+            NotificationMessage: The created notification message.
+        """
         INCREMENT = 1
         recommendations = self.recommendation_service.get_recommendations_by_plan_id(plan_id)
         hora = convert_time_to_12_hour_format(recommendations[FIRST_ELEMENT_INDEX].horaEjecucion)
@@ -47,7 +70,18 @@ class NotificationService:
         )
         return message
 
-    def send_notification_user(self, message:NotificationMessage):
+    def send_notification_user(self, message: NotificationMessage):
+        """
+        Sends a notification to a user.
+
+        Args:
+            message (NotificationMessage): The notification message object containing the title, body, and device token.
+
+        Returns:
+            dict: A dictionary containing the response of the notification sending process. If successful, the dictionary
+            will have a "message" key with the value "Notification sent successfully" and a "response" key with the response
+            from the messaging service. If an error occurs, the dictionary will have an "error" key with the error message.
+        """
         try:
             notification = messaging.Notification(
                 title=message.title,
