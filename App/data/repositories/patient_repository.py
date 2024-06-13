@@ -8,6 +8,10 @@ from data.models.base import HistorialDatos, Paciente, Usuario
 
 
 class PatientRepository:
+    """
+    Repository class for managing patient data in the database.
+    """
+
     def __init__(self, db):
         self.db = db
 

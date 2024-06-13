@@ -11,13 +11,17 @@ from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlan
 
 
 class PersonalizedPlanesRepository:
+    """
+    Repository class for managing personalized plans.
+    """
+
     def __init__(self, db):
         self.db = db
         
-    def post_personalized_plan (self, plan: PersonalizedPlanCreate, profesionalPacienteId: int) -> PlanesPersonalizados:
+    def post_personalized_plan(self, plan: PersonalizedPlanCreate, profesionalPacienteId: int) -> PlanesPersonalizados:
         db_plan: PlanesPersonalizados = PlanesPersonalizados(
-            profesionalPacienteId = profesionalPacienteId,
-            fechaCreacion = date.today()
+            profesionalPacienteId=profesionalPacienteId,
+            fechaCreacion=date.today()
         )
 
         self.db.add(db_plan)
