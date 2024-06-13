@@ -53,7 +53,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: |
-          unzip python-app -d ./deploy
+          unzip release.zip -d ./deploy
           cd deploy
 
       - name: 'Deploy to Azure Web App'
