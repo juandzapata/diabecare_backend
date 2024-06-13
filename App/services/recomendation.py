@@ -1,4 +1,4 @@
-from exceptions.not_created import NotCreatedException
+from utils.exceptions.not_created import NotCreatedException
 from utils.constants.default_values import COUNT_ELEMENTS_ZERO, NOT_ID
 from data.repositories.recommendation_repository import RecommendationRepository
 from schemas.recommendation import RecommendationCreate, RecommendationOut

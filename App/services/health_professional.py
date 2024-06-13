@@ -1,4 +1,4 @@
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from data.repositories.health_professional_repository import HealthProfessionalRepository
 from sqlalchemy import text
 from data.models.base import ProfesionalPaciente, ProfesionalSalud, Usuario

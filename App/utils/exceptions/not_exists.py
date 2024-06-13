@@ -1,4 +1,4 @@
-from exceptions.custom_exception import CustomException
+from utils.exceptions.custom_exception import CustomException
 
 
 class NotExistsException(CustomException):

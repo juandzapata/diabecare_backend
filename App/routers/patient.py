@@ -1,7 +1,7 @@
 from datetime import date
 from schemas.pdf import DataReportCreate
 from data.models.base import Usuario
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from services.pdf import PdfService
 from fastapi import APIRouter, Depends, status, Response
 from fastapi.encoders import jsonable_encoder

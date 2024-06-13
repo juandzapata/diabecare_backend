@@ -1,4 +1,4 @@
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from utils.constants  import messages
 from utils.constants.default_values import FIRST_ELEMENT_INDEX
 from schemas.notification import NotificationMessage

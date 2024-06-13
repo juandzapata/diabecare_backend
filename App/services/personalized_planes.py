@@ -1,14 +1,10 @@
 from services.notification import NotificationService
 from services.health_professional import HealthProfessionalService
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from services.recomendation import RecommendationService
-from data.repositories.recommendation_repository import RecommendationRepository
-from exceptions.not_created import NotCreatedException
-from data.models.base import PlanesPersonalizados
-from utils.constants.default_values import COUNT_ELEMENTS_ZERO
+from utils.exceptions.not_created import NotCreatedException
 from services.patient import PatientService
 from data.repositories.personalized_planes_repository import PersonalizedPlanesRepository
-from fastapi import HTTPException
 from schemas.personalized_planes import PersonalizedPlanCreate, PersonalizedPlanList, PersonalizedPlanOut
 
 

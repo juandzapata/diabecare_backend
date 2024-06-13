@@ -1,4 +1,4 @@
-from exceptions.not_exists import NotExistsException
+from utils.exceptions.not_exists import NotExistsException
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
