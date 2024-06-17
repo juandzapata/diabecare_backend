@@ -19,14 +19,15 @@ async def send_notification(message: NotificationMessage, db: Session = Depends(
 
 @router.post("/save_token", summary="save token for notifications")
 async def create_token(token: tokenCreate, db: Session = Depends(get_db)):
-    service = NotificationService(db)
-    token_create = service.post_token(token)
-    if token_create is None:
-        raise HTTPException(
-            status_code = status.HTTP_409_CONFLICT,
-            detail = f'Token is not added to the database, retry'
+    try:
+        service = NotificationService(db)
+        token_create = service.post_token(token)
+        return JSONResponse(
+            status_code = status.HTTP_201_CREATED,
+            content = {'data': token_create.model_dump()}
         )
-    return JSONResponse(
-        status_code = status.HTTP_201_CREATED,
-        content = {'data': token_create.model_dump()}
-    )
+    except Exception as e:
+        return JSONResponse(
+            status_code = status.HTTP_400_BAD_REQUEST,
+            content = {'data': None, 'message':'No se pudo guardar el token del dispositivo.', 'statusCode': status.HTTP_400_BAD_REQUEST}
+        )

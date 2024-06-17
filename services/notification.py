@@ -1,8 +1,9 @@
+from ast import Or
 from utils.mappers.user_mapper import UserMapper
 from data.repositories.user_repository import UserRepository
 from utils.exceptions.not_exists import NotExistsException
 from utils.constants  import messages
-from utils.constants.default_values import FIRST_ELEMENT_INDEX
+from utils.constants.default_values import FIRST_ELEMENT_INDEX, STRING_EMPTY
 from schemas.notification import NotificationMessage
 from firebase_admin import messaging
 from schemas.notification import tokenCreate, TokenDeviceOut
@@ -103,21 +104,21 @@ class NotificationService:
     def post_token(self, token: tokenCreate) -> TokenDeviceOut:
         existing_token = self.user_repository.get_toke_user_by_user_id(token.userId)
 
-        if existing_token:
+        if existing_token is None and token.token != STRING_EMPTY:
             existing_token.tokenDispositivo = token.token
             db_token = existing_token
-        else:
+        elif token.token != STRING_EMPTY:
             db_token = TokenUsuario(
                 tokenDispositivo=token.token,
                 usuarioId=token.userId
             )
             db_token = self.user_repository.create_token_user(db_token)
         
-        self.db.commit()
-        self.db.refresh(db_token)
+       
+        if db_token is None:
+            raise NotExistsException(messages.NOT_EXISTS_USER_TOKEN)
         
         token_device_out = UserMapper.to_user_token_out(db_token)
-        
         return token_device_out
 
     def exists_user_token (self, user_id: int, db) -> bool:

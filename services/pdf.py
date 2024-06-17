@@ -185,27 +185,26 @@ class PdfService:
         except IOError:
             pdf.drawString(100, 630, "Image not available")
             
-    class PDFBuilder:
-        def build_pdf_footer(self, pdf):
-            """
-            Builds the footer section of the PDF document.
+    def build_pdf_footer(self, pdf):
+        """
+        Builds the footer section of the PDF document.
 
-            Args:
-                pdf (PDFDocument): The PDF document to add the footer to.
+        Args:
+            pdf (PDFDocument): The PDF document to add the footer to.
 
-            Returns:
-                None
-            """
-            grey_color = Color(128/255, 128/255, 128/255)
-            pdf.setFont("Helvetica", 8)
-            pdf.setFillColor(grey_color)
-            pdf.drawString(440, 10, " Realizado por DiabeCare Platform")
+        Returns:
+            None
+        """
+        grey_color = Color(128/255, 128/255, 128/255)
+        pdf.setFont("Helvetica", 8)
+        pdf.setFillColor(grey_color)
+        pdf.drawString(440, 10, " Realizado por DiabeCare Platform")
 
-            pdf.setFont("Helvetica", 12)
-            pdf.drawString(435, 115, "(606) 8701096")
-            pdf.drawString(435, 80, "contact@diabecare.com")
-            pdf.drawString(435, 45, "www.diabecare.com") 
-            
-            pdf.setFont("Helvetica", 10)
-            pdf.drawString(120, 135, "Julio Márquez L.")
-            pdf.drawString(120, 120, "Director general")
+        pdf.setFont("Helvetica", 12)
+        pdf.drawString(435, 115, "(606) 8701096")
+        pdf.drawString(435, 80, "contact@diabecare.com")
+        pdf.drawString(435, 45, "www.diabecare.com") 
+        
+        pdf.setFont("Helvetica", 10)
+        pdf.drawString(120, 135, "Julio Márquez L.")
+        pdf.drawString(120, 120, "Director general")
