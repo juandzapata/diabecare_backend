@@ -75,4 +75,5 @@ jobs:
         with:
           app-name: 'diabecareapi'
           slot-name: 'Production'
+          startup-command: ./startup.sh
           
